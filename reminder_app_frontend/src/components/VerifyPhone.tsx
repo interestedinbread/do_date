@@ -2,14 +2,14 @@ import { useEffect, useState } from "react"
 import { useAuth } from "./contexts/useAuth"
 import { updateUserAttributes, fetchAuthSession } from "aws-amplify/auth"
 
-type HomePageProps = {
+type VerifyPhoneProps = {
     phoneNumber: string | null
     setPhoneNumber: (phoneNumber: string) => void
     isLoading: boolean
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function HomePage({ phoneNumber, setPhoneNumber, isLoading, setIsLoading }: HomePageProps) {
+export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoading }: VerifyPhoneProps) {
 
     const { logout, user } = useAuth()
     const [verificationCode, setVerificationCode] = useState('')

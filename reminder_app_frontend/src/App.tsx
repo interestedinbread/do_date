@@ -2,7 +2,7 @@ import { Header } from "./components/Header"
 import { AuthPanel } from "./components/AuthPanel"
 import { useEffect, useState } from "react"
 import { useAuth } from "./components/contexts/useAuth"
-import { HomePage } from "./components/HomePage"
+import { VerifyPhone } from "./components/VerifyPhone"
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
 
   return (
         user ? (
-          <HomePage 
+          <VerifyPhone 
           phoneNumber={phoneNumber}
           setPhoneNumber={setPhoneNumber}
           isLoading={isLoading}
