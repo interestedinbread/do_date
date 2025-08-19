@@ -65,21 +65,18 @@ exports.verifyPhoneNumber = async (req, res) => {
         Key: { phoneNumber }
     }))
     
-    try {
-        await cognitoClient.send(new UpdateUserAttributesCommand({
-            AccessToken: accessToken,
-            UserAttributes: [
-                {
-                    Name: 'phone_number_verified',
-                    Value: 'true'
-                }
-            ]
-        }));
-
-        console.log('Phone number marked as verified in Cognito')
-    } catch (cognitoError) {
-        console.error('Error updating Cognito:', cognitoError)
-    }
+    // Store verification status in DynamoDB since phone_number_verified is read-only in Cognito
+    await docClient.send(new PutCommand({
+        TableName: 'verification-codes',
+        Item: {
+            phoneNumber,
+            verified: true,
+            verifiedAt: new Date().toISOString(),
+            ttl: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60) // 30 days
+        }
+    }))
+    
+    console.log('Phone number verification status stored in DynamoDB')
     
     res.json({ success: true, message: 'Phone number verified successfully' });
   } catch (error) {
@@ -92,17 +89,30 @@ exports.checkPhoneVerification = async (req, res) => {
     try{
         const { accessToken } = req.body
 
+        // Get user info from Cognito to get phone number
         const result = await cognitoClient.send(new GetUserCommand({
             AccessToken: accessToken
         }))
 
-        const phoneVerified = result.UserAttributes.find(
-            attr => attr.Name === 'phone_number_verified'
-        )?.Value === 'true'
-
         const phoneNumber = result.UserAttributes.find(
             attr => attr.Name === 'phone_number'
         )?.Value
+
+        if (!phoneNumber) {
+            return res.json({
+                success: true,
+                phoneVerified: false,
+                phoneNumber: null
+            })
+        }
+
+        // Check verification status in DynamoDB
+        const verificationResult = await docClient.send(new GetCommand({
+            TableName: 'verification-codes',
+            Key: { phoneNumber }
+        }))
+
+        const phoneVerified = verificationResult.Item?.verified === true
 
         res.json({
             success: true,

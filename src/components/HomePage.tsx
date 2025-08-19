@@ -126,7 +126,7 @@ export function HomePage({ phoneNumber, setPhoneNumber, isLoading, setIsLoading 
 
     return(
         <>
-        <div className="bg-green-400 rounded-lg p-2 w-9/10 mt-20 mx-auto">
+        {!phoneVerified && <div className="bg-green-400 rounded-lg p-2 w-9/10 mt-20 mx-auto">
         {!verificationNeeded ? (
             <form onSubmit={updatePhoneNumber}>
                 <h4 className="text-white text-xl">Enter your phone number to start setting reminders!</h4>
@@ -154,7 +154,7 @@ export function HomePage({ phoneNumber, setPhoneNumber, isLoading, setIsLoading 
             </form>
         )
         }
-        </div>
+        </div>}
 
         <div className="w-max h-max p-2 bg-green-400 rounded-lg mx-auto mt-20">
             <h2 className="text-white text-2xl">What would you like to do?</h2>
