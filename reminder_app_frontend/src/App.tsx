@@ -3,6 +3,7 @@ import { AuthPanel } from "./components/AuthPanel"
 import { useEffect, useState } from "react"
 import { useAuth } from "./components/contexts/useAuth"
 import { VerifyPhone } from "./components/VerifyPhone"
+import { OptionsPanel } from "./components/OptionsPanel"
 
 
 function App() {
@@ -20,12 +21,15 @@ function App() {
 
   return (
         user ? (
+          <>
           <VerifyPhone 
           phoneNumber={phoneNumber}
           setPhoneNumber={setPhoneNumber}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           />
+          <OptionsPanel />
+          </>
          ) : (
         <>
           {!authPanelOpen && <Header setAuthPanelOpen={setAuthPanelOpen}/>}
