@@ -12,6 +12,7 @@ function App() {
   const [registering, setRegistering] = useState(false)
   const { user } = useAuth()
   const [phoneNumber, setPhoneNumber] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
 
@@ -22,6 +23,8 @@ function App() {
           <HomePage 
           phoneNumber={phoneNumber}
           setPhoneNumber={setPhoneNumber}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
           />
          ) : (
         <>

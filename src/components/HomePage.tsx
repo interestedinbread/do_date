@@ -1,17 +1,55 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "./contexts/useAuth"
-import { updateUserAttributes, confirmUserAttribute } from "aws-amplify/auth"
+import { updateUserAttributes, fetchAuthSession } from "aws-amplify/auth"
 
 type HomePageProps = {
     phoneNumber: string | null
     setPhoneNumber: (phoneNumber: string) => void
+    isLoading: boolean
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function HomePage({ phoneNumber, setPhoneNumber }: HomePageProps) {
+export function HomePage({ phoneNumber, setPhoneNumber, isLoading, setIsLoading }: HomePageProps) {
 
     const { logout, user } = useAuth()
     const [verificationCode, setVerificationCode] = useState('')
     const [verificationNeeded, setVerificationNeeded] = useState(false)
+    const [phoneVerified, setPhoneVerified] = useState(false)
+
+    useEffect(() => {
+        checkPhoneVerificationStatus()
+    }, [])
+
+    async function checkPhoneVerificationStatus() {
+        try {
+            const session = await fetchAuthSession()
+            const accessToken = session.tokens?.accessToken?.toString()
+
+            if (!accessToken) {
+                console.log('No access token available')
+                return
+            }
+
+            const response = await fetch('http://localhost:3001/api/check-phone-verification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ accessToken })
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                setPhoneVerified(data.phoneVerified)
+                if (data.phoneNumber) {
+                    setPhoneNumber(data.phoneNumber) 
+                }
+                console.log('Phone verification status:', data)
+            }
+        } catch (err) {
+            console.error('Error checking phone verification status:', err)
+        }
+    }
 
     async function updatePhoneNumber(e: React.FormEvent) {
         e.preventDefault()
@@ -22,24 +60,63 @@ export function HomePage({ phoneNumber, setPhoneNumber }: HomePageProps) {
                 }
             })
             console.log("Phone number updated successfully:", result)
-            setVerificationNeeded(true)
+            
+            const response = await fetch('http://localhost:3001/api/send-verification-sms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ phoneNumber })
+            })
+
+            if (response.ok) {
+                console.log("SMS sent successfully")
+                setVerificationNeeded(true)
+            } else {
+                throw new Error('Failed to send SMS')
+            }
         } catch (err) {
-            console.error("Error updating phone number:", err)
+            console.error("Error:", err)
         }    
     }
 
+
+
     async function confirmPhoneNumber(e: React.FormEvent) {
         e.preventDefault()
+        setIsLoading(true)
         try{
-            const result = await confirmUserAttribute({
-                userAttributeKey: 'phone_number',
-                confirmationCode: verificationCode
+            const session = await fetchAuthSession()
+            const accessToken = session.tokens?.accessToken?.toString()
+
+            if(!accessToken) {
+                throw new Error('No access token available')
+            }
+
+            const response = await fetch('http://localhost:3001/api/verify-phone', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phoneNumber,
+                    verificationCode,
+                    accessToken
+                })
             })
-            console.log('Phone number confirmed:', result)
-            setVerificationNeeded(false)
-            setVerificationCode('')
+
+            if(response.ok) {
+                console.log('Phone number verified successfully')
+                setVerificationNeeded(false)
+                setVerificationCode('')
+            } else {
+                const errorData = await response.json()
+                throw new Error(errorData.message || 'Verification failed')
+            }
         } catch (err) {
-            console.error('Error confirming phone number:', err)
+            console.error('Error verifying phone number:', err)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -72,7 +149,8 @@ export function HomePage({ phoneNumber, setPhoneNumber }: HomePageProps) {
                     setVerificationCode(e.target.value)
                 }/>
                 <button type="submit"
-                className="bg-yellow-300 rounded-md p-2">Confirm phone number</button>
+                disabled={isLoading}
+                className="bg-yellow-300 rounded-md p-2">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
             </form>
         )
         }
