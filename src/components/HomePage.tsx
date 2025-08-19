@@ -109,6 +109,7 @@ export function HomePage({ phoneNumber, setPhoneNumber, isLoading, setIsLoading 
                 console.log('Phone number verified successfully')
                 setVerificationNeeded(false)
                 setVerificationCode('')
+                await checkPhoneVerificationStatus()
             } else {
                 const errorData = await response.json()
                 throw new Error(errorData.message || 'Verification failed')
