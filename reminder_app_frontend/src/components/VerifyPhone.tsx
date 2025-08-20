@@ -121,10 +121,6 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
         }
     }
 
-    const handleLogout = async () => {
-        await logout()
-    }
-
     return(
         <>
         {!phoneVerified && <div className="bg-green-400 rounded-lg p-2 w-9/10 mt-20 mx-auto">
@@ -157,11 +153,6 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
         }
         </div>}
 
-        <div className="w-max h-max p-2 bg-green-400 rounded-lg mx-auto mt-20">
-            <h2 className="text-white text-2xl">What would you like to do?</h2>
-            <button className="bg-green-400 border-2 border-yellow-300 p-2 rounded-md text-white"
-            onClick={handleLogout}>Logout</button>
-        </div>
         </>
     )
 }

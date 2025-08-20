@@ -12,7 +12,7 @@ function App() {
   const [loggingIn, setLoggingIn] = useState(true)
   const [registering, setRegistering] = useState(false)
   const { user } = useAuth()
-  const [phoneNumber, setPhoneNumber] = useState(null)
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {

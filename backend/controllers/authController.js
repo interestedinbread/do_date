@@ -2,7 +2,7 @@
 const twilio = require('twilio');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb') 
 const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
-const { CognitoIdentityProviderClient, UpdateUserAttributesCommand, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
+const { CognitoIdentityProviderClient, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
 
 // Initialize Twilio client
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -45,7 +45,7 @@ exports.sendVerificationSMS = async (req, res) => {
 
 exports.verifyPhoneNumber = async (req, res) => {
   try {
-    const { phoneNumber, verificationCode, accessToken } = req.body;
+    const { phoneNumber, verificationCode } = req.body;
     
     const result = await docClient.send(new GetCommand({
         TableName: 'verification-codes',
