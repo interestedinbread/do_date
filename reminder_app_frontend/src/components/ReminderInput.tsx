@@ -1,0 +1,96 @@
+import { useState } from "react"
+import { addReminder } from "../api/reminderApi"
+import { fetchAuthSession } from "aws-amplify/auth"
+
+
+type ReminderInputProps = {
+    setReminderInputOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
+
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [reminderTime, setReminderTime] = useState('')
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        const session = await fetchAuthSession()
+        const accessToken = session.tokens?.accessToken?.toString()
+
+        if (!accessToken) {
+            console.error('No access token available')
+            return
+        }
+    
+        const reminderData = {
+            title,
+            description,
+            reminder_time: reminderTime,
+            accessToken
+        }
+
+        try{
+            const result = await addReminder(reminderData)
+            console.log('Reminder added successfully:', result)
+            setTitle('')
+            setDescription('')
+            setReminderTime('')
+        } catch (err) {
+            console.error('Failed to add reminder:', err)
+        }
+    }
+
+    return(
+        <>
+        <div className="w-max h-max p-2 bg-green-400 rounded-lg mx-auto mt-20">
+            <form 
+            onSubmit={handleSubmit}
+            className="flex flex-col">
+                <p>Title</p>
+                <input 
+                    value={title}
+                    onChange={(e) => {
+                        setTitle(e.target.value)
+                    }}
+                    placeholder="eg. Get flowers"
+                    className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2"
+                    />
+                <p className="mt-4">Description</p>
+                <p className="italic">This is the actual content of your reminder</p>
+                <textarea 
+                    onChange={(e) => {
+                        setDescription(e.target.value)
+                    }}
+                    value={description}
+                    placeholder="Pick up tulips for Emily at Charlie's"
+                    className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2 w-9/10"
+                    />
+                <p className="mt-4">Reminder Time</p>
+                <input 
+                    value={reminderTime}
+                    onChange={(e) => {
+                       setReminderTime(e.target.value) 
+                    }}
+                    type="datetime-local"
+                    placeholder="Select date and time"
+                    className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2"
+                    />
+                <button 
+                className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max"
+                type="submit"
+                >
+                    Save Reminder
+                </button>
+            </form>
+        </div>
+        <button
+        onClick={() => {
+            setReminderInputOpen(false)
+        }}
+        className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max ml-10 mt-6"
+        >Go Back</button>
+        </>
+    )
+}

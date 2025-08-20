@@ -11,6 +11,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api', require('./routes/auth'))
+app.use('/api', require('./routes/reminders'))
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
