@@ -48,13 +48,13 @@ exports.addReminder = async (req, res) => {
 }
 
 exports.getReminders = async (req, res) => {
-    const { accessToken } = req.body
+    const accessToken = req.headers['authorization']?.replace('Bearer ', '')
 
-    const result = await cognitoClient.send(new GetUserCommand({
+    const user = await cognitoClient.send(new GetUserCommand({
         AccessToken: accessToken
     }))
 
-    const userId = result.UserAttributes.find(
+    const userId = user.UserAttributes.find(
         attr => attr.Name === 'sub'
     )?.Value
 
@@ -62,7 +62,7 @@ exports.getReminders = async (req, res) => {
         const response = await docClient.send(new QueryCommand({
             TableName: 'reminders-2',
             KeyConditionExpression: 'userId = :userId',
-            ExpressionAttrributeValues: {
+            ExpressionAttributeValues: {
                 ':userId': userId
             }
         }))

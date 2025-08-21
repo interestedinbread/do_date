@@ -38,7 +38,7 @@ export const addReminder = async (reminderData: ReminderData): Promise<ApiRespon
     }
 }
 
-export const getReminders = async (accessToken: string) => {
+export const getReminders = async (accessToken: string | undefined) => {
 
     try{
         const response = await fetch('http://localhost:3001/api/get-reminders', {
