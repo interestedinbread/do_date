@@ -1,6 +1,6 @@
 const twilio = require('twilio');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb') 
-const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, PutCommand, DeleteCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const { CognitoIdentityProviderClient, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
@@ -28,7 +28,7 @@ exports.addReminder = async (req, res) => {
 
     try{
         await docClient.send(new PutCommand({
-            TableName: 'reminders-2',
+            TableName: 'Reminders-3',
             Item: {
                 userId,
                 reminderId,
@@ -60,7 +60,7 @@ exports.getReminders = async (req, res) => {
 
     try{
         const response = await docClient.send(new QueryCommand({
-            TableName: 'reminders-2',
+            TableName: 'Reminders-3',
             KeyConditionExpression: 'userId = :userId',
             ExpressionAttributeValues: {
                 ':userId': userId
@@ -88,7 +88,7 @@ exports.deleteReminder = async (req, res) => {
 
     try{
         await docClient.send(new DeleteCommand({
-            TableName: 'reminders-2',
+            TableName: 'Reminders-3',
             Key: {
                 userId,
                 reminderId

@@ -40,6 +40,8 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
                 setReminders(result.reminders)
             }
 
+            console.log(result)
+
         } catch (err) {
             console.error('Error fetching reminders:', err)
         } finally {
