@@ -45,8 +45,16 @@ exports.sendVerificationSMS = async (req, res) => {
 
 exports.verifyPhoneNumber = async (req, res) => {
   try {
-    const { phoneNumber, verificationCode } = req.body;
-    
+    const { phoneNumber, verificationCode, accessToken } = req.body;
+
+    const user = await cognitoClient.send(new GetUserCommand({
+      AccessToken: accessToken
+    }))
+
+    const userId = user.UserAttributes.find(
+      attr => attr.Name === "userId"
+    )?.Value
+
     const result = await docClient.send(new GetCommand({
         TableName: 'verification-codes',
         Key: { phoneNumber }
@@ -77,6 +85,15 @@ exports.verifyPhoneNumber = async (req, res) => {
     }))
     
     console.log('Phone number verification status stored in DynamoDB')
+
+    await docClient.send(new PutCommand({
+      TableName: 'verified-phone-numbers',
+      Item: {
+        userId,
+        phoneNumber,
+        verifiedAt: new Date().toISOString()
+      }
+    }))
     
     res.json({ success: true, message: 'Phone number verified successfully' });
   } catch (error) {

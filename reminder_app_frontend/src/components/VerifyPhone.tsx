@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useAuth } from "./contexts/useAuth"
 import { updateUserAttributes, fetchAuthSession } from "aws-amplify/auth"
 
 type VerifyPhoneProps = {
@@ -11,7 +10,6 @@ type VerifyPhoneProps = {
 
 export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoading }: VerifyPhoneProps) {
 
-    const { logout, user } = useAuth()
     const [verificationCode, setVerificationCode] = useState('')
     const [verificationNeeded, setVerificationNeeded] = useState(false)
     const [phoneVerified, setPhoneVerified] = useState(false)
