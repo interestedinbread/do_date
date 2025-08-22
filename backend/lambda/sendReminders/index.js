@@ -1,11 +1,7 @@
-const { GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
-const { DynamoDBDocumentClient, GetCommand, UpdateCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, GetCommand, UpdateCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const twilio = require('twilio');
-const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
 
-
-// does my file have access to .env from here?
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION })
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
@@ -18,6 +14,16 @@ exports.handler = async (event) => {
         if (!userId || !reminderId) {
             throw new Error('Missing userId or reminderId in event');
         }
+
+        const phoneResult = await docClient.send(new QueryCommand({
+            TableName: 'verified-phone-numbers',
+            KeyConditionExpression: 'userId = :userId',
+            ExpressionAttributeValues: {
+                ':userId': userId
+            }
+        }))
+
+        const phoneNumber = phoneResult.Items?.[0]?.phoneNumber
 
         const response = await docClient.send(new GetCommand({
             TableName: 'Reminders-3',
@@ -38,9 +44,6 @@ exports.handler = async (event) => {
             console.log(`Reminder already sent: ${reminderId}`);
             return { statusCode: 200, body: 'Reminder already sent' }
         }
-
-        // Get user's phone number (you'll need to implement this)
-        const phoneNumber = await getUserPhoneNumber(userId);
 
         if(!phoneNumber) {
             console.log(`No phone number found for user: ${userId}`);
@@ -81,14 +84,3 @@ exports.handler = async (event) => {
     }
 }
 
-const getUserPhoneNumber = async () => {
-    
-    const user = await cognitoClient.send(new GetUserCommand({
-        
-    }))
-    try {
-
-    } catch (err) {
-
-    }
-}

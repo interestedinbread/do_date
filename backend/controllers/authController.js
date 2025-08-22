@@ -52,7 +52,7 @@ exports.verifyPhoneNumber = async (req, res) => {
     }))
 
     const userId = user.UserAttributes.find(
-      attr => attr.Name === "userId"
+      attr => attr.Name === "sub"
     )?.Value
 
     const result = await docClient.send(new GetCommand({
