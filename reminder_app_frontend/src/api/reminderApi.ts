@@ -23,6 +23,7 @@ interface ApiResponse {
 
 export const addReminder = async (reminderData: ReminderData): Promise<ApiResponse> => {  
     try{
+
         const response = await fetch('http://localhost:3001/api/add-reminder', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -58,15 +59,16 @@ export const getReminders = async (accessToken: string | undefined) => {
     }
 }
 
-export const deleteReminder = async (reminderId: string, accessToken: string): Promise<ApiResponse> => {
+export const deleteReminder = async (reminderId: string, accessToken: string | undefined): Promise<ApiResponse> => {
 
     try {
         const response = await fetch(`http://localhost:3001/api/delete-reminder/${reminderId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ accessToken })
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+            
         })
         if(!response.ok){
             throw new Error(`Failed to delete reminder: ${response.status}`)

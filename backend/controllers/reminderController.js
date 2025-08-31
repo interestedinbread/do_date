@@ -2,6 +2,7 @@ const twilio = require('twilio');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb') 
 const { DynamoDBDocumentClient, PutCommand, DeleteCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const { CognitoIdentityProviderClient, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
+const { EventBridgeClient, PutRuleCommand, PutTargetsCommand } = require('@aws-sdk/client-eventbridge')
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 
@@ -9,10 +10,12 @@ const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AW
 
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
+const eventBridge = new EventBridgeClient({ region: process.env.AWS_REGION })
+
 
 exports.addReminder = async (req, res) => {
 
-    const { reminder_time, description, title, accessToken } = req.body
+    const { reminder_time, description, title, accessToken, timezone_offset } = req.body
    
     const result = await cognitoClient.send(new GetUserCommand({
         AccessToken: accessToken
@@ -40,6 +43,20 @@ exports.addReminder = async (req, res) => {
             }
         }))
 
+        try {
+            await eventBridgeHandler(userId, reminderId, reminder_time, timezone_offset)
+        } catch (err) {
+            await docClient.send(new DeleteCommand({
+                TableName: 'Reminders-3',
+                Key: { userId, reminderId }
+            }))
+
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to schedule reminder notification'
+            });
+        }
+        
         res.json({ success: true, message: 'Reminder added successfully' })
     } catch (err) {
         console.error('Error adding reminder:', err)
@@ -49,7 +66,6 @@ exports.addReminder = async (req, res) => {
 
 exports.getReminders = async (req, res) => {
     const accessToken = req.headers['authorization']?.replace('Bearer ', '')
-
     const user = await cognitoClient.send(new GetUserCommand({
         AccessToken: accessToken
     }))
@@ -75,9 +91,8 @@ exports.getReminders = async (req, res) => {
 }
 
 exports.deleteReminder = async (req, res) => {
-    const { accessToken } = req.body
+    const accessToken = req.headers['authorization']?.replace('Bearer ', '')
     const { reminderId } = req.params
-    
     const result = await cognitoClient.send(new GetUserCommand({
         AccessToken: accessToken
     }))
@@ -99,5 +114,38 @@ exports.deleteReminder = async (req, res) => {
     } catch (err) {
         console.error('Error deleting reminder', err)
         res.status(500).json({ success: false, message: 'Failed to delete reminder' })
+    }
+}
+
+const eventBridgeHandler = async (userId, reminderId, reminder_time) => {
+    
+    try{
+
+        const localDate = new Date(reminder_time);
+
+        
+        const cronExpression = `cron(${localDate.getUTCMinutes()} ${localDate.getUTCHours()} ${localDate.getUTCDate()} ${localDate.getUTCMonth() + 1} ? ${localDate.getUTCFullYear()})`;
+        console.log('cronExpression:', cronExpression)
+
+        await eventBridge.send(new PutRuleCommand({
+            Name: `reminder-${reminderId}`,
+            ScheduleExpression: cronExpression,
+            State: 'ENABLED'
+        }));
+
+        await eventBridge.send(new PutTargetsCommand({
+            Rule: `reminder-${reminderId}`,
+            Targets: [{
+                Id: `reminder-target-${reminderId}`,
+                Arn: 'arn:aws:lambda:us-east-2:554580246362:function:sendReminder',
+                Input: JSON.stringify({
+                    userId,
+                    reminderId
+                })
+            }]
+        }));
+    } catch (err) {
+        console.error('EventBridge setup failed:', err);
+        throw err;
     }
 }
