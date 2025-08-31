@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { getReminders, deleteReminder } from "../api/reminderApi"
 import { fetchAuthSession } from "aws-amplify/auth"
 
@@ -22,7 +22,9 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
     const [reminders, setReminders] = useState<Reminder[]>([])
     // we initialize this as true because useEffect will fetchreminders on component mount
     const [loading, setLoading] = useState(true)
+    // we will use this state to switch between showing sent and unsent reminders
     const [showUpcomingReminders, setShowUpcomingReminders] = useState(true)
+    // we use a string here instead of an array because it is only one item at a time
     const [removingItem, setRemovingItem] = useState<string | null>(null)
 
     useEffect(() => {
@@ -32,22 +34,22 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
     const fetchReminders = async () => {
 
         try{
+            // here we grab the access token 
             const session = await fetchAuthSession()
             const accessToken = session.tokens?.accessToken?.toString()
 
+            // if check for no access token
             if(!accessToken){
                 console.error('No access token available')
                 return
             }
 
+            // call function imported from our api folder
             const result = await (getReminders(accessToken))
             if(result.success && result.reminders) {
                 setReminders(result.reminders)
             }
-
-            console.log(result)
             
-
         } catch (err) {
             console.error('Error fetching reminders:', err)
         } finally {
@@ -55,40 +57,48 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
         }
     }
 
-    const filterReminders = () => {
-       if(showUpcomingReminders){
-        return reminders.filter(reminder => reminder.sent === false)
-       } else {
-        return reminders.filter(reminder => reminder.sent === true)
-       }
-    }
+    // this will filter the reminders array using the "sent" property on each reminder obj
+    const filteredReminders = useMemo(() => {
+        if(showUpcomingReminders){
+            return reminders.filter(reminder => reminder.sent === false)
+           } else {
+            return reminders.filter(reminder => reminder.sent === true)
+           }
+    }, [reminders, showUpcomingReminders])
 
     const handleDeleteReminder = async (reminderId: string) => {
         try{
+            // grab access token
             const session = await fetchAuthSession()
             const accessToken = session.tokens?.accessToken?.toString()
 
+            // if check for no token
             if (!accessToken){
                 console.error('No access token found')
                 return
             }
 
+            // call delete function from our front end api folder
             const result = await deleteReminder(reminderId, accessToken)
             if(!result.success){
                 throw new Error('Error deleting reminder')
             }
 
+            // here we update the reminders in our component by filtering the array
             setReminders(reminders => 
                 reminders.filter(reminder => reminder.reminderId !== reminderId)
             )
 
+            // set the string back to null
             setRemovingItem(null)
         } catch (err) {
             console.error('Could not delete reminder:', err)
         }
     }
 
-    const filteredReminders = filterReminders()
+    
+
+    
 
     return(
         <>
@@ -153,7 +163,7 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
                     <button 
                     onClick={() => {
                         setShowUpcomingReminders(prev => !prev)
-                        filterReminders()
+                        // filterReminders()
                     }}
                     className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max">{showUpcomingReminders ? 'View sent reminders' : 'View upcoming reminders'}</button>
                 </div>
