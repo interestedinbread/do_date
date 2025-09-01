@@ -17,22 +17,22 @@ export function OptionsPanel({ reminderInputOpen, viewRemindersOpen, setReminder
     }
 
     return (
-        <div className="w-max h-max p-2 rounded-lg mx-auto flex flex-col gap-4 bg-indigo-100 shadow-md">
+        <div className="w-max h-max p-2 rounded-lg mx-auto flex flex-col gap-4 bg-indigo-100 shadow-md mt-10">
             <h2 className="text-lg inter-regular text-indigo-600">What would you like to do?</h2>
             <button 
-                className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
+                className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                 onClick={() => {
                     setReminderInputOpen(true)
                 }}
             >Create Reminder</button>
             <button 
-                className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md" 
+                className="bg-white px-2 rounded-md text-green-500 w-max shadow-md" 
                 onClick={() => {
                     setViewRemindersOpen(true)
                 }} 
             >View My Reminders</button>
             <button 
-                className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
+                className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                 onClick={handleLogout}
             >Logout</button>
         </div>

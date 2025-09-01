@@ -89,7 +89,7 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                     />
                 <div className="flex justify-between">
                     <button 
-                    className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
+                    className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                     type="submit"
                     >
                         Save Reminder
@@ -98,7 +98,7 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                     onClick={() => {
                         setReminderInputOpen(false)
                     }}
-                    className="bg-indigo-400 px-2 shadow-md px-2 rounded-md text-white w-max ml-10"
+                    className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                     >Go Back</button>
                 </div>
             </form>

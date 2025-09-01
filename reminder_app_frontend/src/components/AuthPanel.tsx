@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "./contexts/useAuth.ts"
 
-
-
 type AuthPanelProps = {
     setAuthPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
     loggingIn: boolean
@@ -21,7 +19,7 @@ export function AuthPanel( {
 const [username, setUsername] = useState('')
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
-const { login, register, logout } = useAuth()
+const { login, register } = useAuth()
 
 const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,12 +45,9 @@ const handleRegister = async (e: React.FormEvent) => {
     }
 }
 
-const handleLogout = async () => {
-    await logout()
-}
 
     return(
-        <div className="w-max h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto">
+        <div className="w-2/3 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto">
             <form 
             className="flex flex-col"
             onSubmit={

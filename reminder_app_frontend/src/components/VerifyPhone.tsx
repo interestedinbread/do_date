@@ -121,23 +121,24 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
 
     return(
         <>
-        {!phoneVerified && <div className="bg-green-400 rounded-lg p-2 w-9/10 mt-20 mx-auto">
+        {!phoneVerified && <div className="bg-indigo-100 shadow-md rounded-lg p-2 w-9/10 mt-10 mx-auto">
         {!verificationNeeded ? (
-            <form onSubmit={updatePhoneNumber}>
-                <h4 className="text-white text-xl">Enter your phone number to start setting reminders!</h4>
-                <input className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2"
+            <form onSubmit={updatePhoneNumber}
+            className="flex flex-col">
+                <h4 className="text-indigo-600 inter-regular text-lg">Enter your phone number below to start setting reminders!</h4>
+                <input className="shadow-md bg-white rounded-md pl-2 my-2 w-max"
                 placeholder="e.g. +11234567890"
                 value={phoneNumber || ''}
                 onChange={(e) => 
                     setPhoneNumber(e.target.value)
                 }/>
                 <button type="submit"
-                className="bg-yellow-300 rounded-md p-2">Update phone number</button>
+                className="bg-white text-green-600 rounded-md px-2 w-max shadow-md my-2">Set phone number</button>
             </form>
         ) : (
             <form onSubmit={confirmPhoneNumber}>
                 <h4 className="text-white text-xl">Enter the verification code sent to your phone</h4>
-                <input className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2"
+                <input className="shadow-md bg-white text-gray-600 rounded-md pl-2 my-2 w-max"
                 placeholder="Enter 6-digit code"
                 value={verificationCode}
                 onChange={(e) => 
@@ -145,7 +146,7 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
                 }/>
                 <button type="submit"
                 disabled={isLoading}
-                className="bg-yellow-300 rounded-md p-2">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
+                className="bg-white text-green-600 shadow-md rounded-md p-2">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
             </form>
         )
         }
