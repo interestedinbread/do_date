@@ -58,6 +58,7 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
     }
 
     // this will filter the reminders array using the "sent" property on each reminder obj
+    // runs only when dependencies are updated
     const filteredReminders = useMemo(() => {
         if(showUpcomingReminders){
             return reminders.filter(reminder => reminder.sent === false)
@@ -102,8 +103,7 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
 
     return(
         <>
-            <h1 className="inter-bold text-4xl text-green-400 text-center mt-8">Your Reminders</h1>
-            <div className="h-max p-4 bg-green-400 rounded-lg mx-auto mt-8 w-9/10">
+            <div className="h-max p-4 bg-indigo-100 shadow-md rounded-lg mx-auto w-9/10">
                     { loading ? (
                         // if we are loading we display this message :)
                         <p>Loading Reminders...</p>
@@ -114,18 +114,18 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
                         // if we've finished loading and there ARE reminders...
                         <div className="w-full">{
                             filteredReminders.map((reminder) => (
-                                <div className="bg-gray-200 rounded-lg p-2 my-4"
+                                <div className="bg-gray-300 rounded-lg p-2 my-4 shadow-md"
                                 key={reminder.reminderId}>
                                     {removingItem !== reminder.reminderId ? (   
                                         <>
-                                            <h4 className="font-bold">{reminder.title}</h4>
+                                            <h4 className="font-bold inter-bold">{reminder.title}</h4>
                                             <p className="italic my-2">{reminder.description}</p>
                                             <div className="flex justify-between">
-                                                <p>{
+                                                <p className="inter-bold">{
                                                     // this converts the reminder time into a string with Canadian date formatting 
                                                     new Date(reminder.reminder_time).toLocaleString()
                                                 }</p>
-                                                <button className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max"
+                                                <button className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
                                                 onClick={() => {
                                                     setRemovingItem(reminder.reminderId)
                                                 }}
@@ -137,11 +137,11 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
                                                     <h4 className="font-bold">{reminder.title}</h4>
                                                     <p>Are you sure you want to remove this reminder?</p>
                                                     <div className="flex justify-end">
-                                                        <button className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max mx-2"
+                                                        <button className="bg-indigo-400 px-2 rounded-md text-white w-max mx-2 shadow-md"
                                                         onClick={() => {
                                                             setRemovingItem(null)
                                                         }}>No</button>
-                                                        <button className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max mx-2"
+                                                        <button className="bg-indigo-400 px-2 rounded-md text-white w-max mx-2 shadow-md"
                                                         onClick={() => {
                                                             handleDeleteReminder(reminder.reminderId)
                                                         }}>Yes</button>
@@ -159,13 +159,13 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
                     onClick={() => {
                         setViewRemindersOpen(false)
                     }}
-                    className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max">Go Back</button>
+                    className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md">Go Back</button>
                     <button 
                     onClick={() => {
                         setShowUpcomingReminders(prev => !prev)
                         // filterReminders()
                     }}
-                    className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max">{showUpcomingReminders ? 'View sent reminders' : 'View upcoming reminders'}</button>
+                    className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md">{showUpcomingReminders ? 'View sent reminders' : 'View upcoming reminders'}</button>
                 </div>
             </div>
         </>

@@ -24,7 +24,8 @@ function App() {
   })
 
   return (
-        user ? (
+    <div className="h-screen w-screen bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-10">
+        {user ? (
           <>
             <VerifyPhone 
             phoneNumber={phoneNumber}
@@ -46,15 +47,16 @@ function App() {
               setViewRemindersOpen={setViewRemindersOpen}/>}
           </>
          ) : (
-        <>
-          {!authPanelOpen && <Header setAuthPanelOpen={setAuthPanelOpen}/>}
-          {authPanelOpen && <AuthPanel setAuthPanelOpen={setAuthPanelOpen}
-          loggingIn={loggingIn}
-          setLoggingIn={setLoggingIn}
-          registering={registering}
-          setRegistering={setRegistering}/>}
-        </>
-         )
+          <>
+            {!authPanelOpen && <Header setAuthPanelOpen={setAuthPanelOpen}/>}
+            {authPanelOpen && <AuthPanel setAuthPanelOpen={setAuthPanelOpen}
+            loggingIn={loggingIn}
+            setLoggingIn={setLoggingIn}
+            registering={registering}
+            setRegistering={setRegistering}/>}
+          </>
+         )}
+    </div>
   )
 }
 

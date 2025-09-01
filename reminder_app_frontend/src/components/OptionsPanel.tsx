@@ -8,31 +8,31 @@ type OptionsPanelProps = {
 }
 
 export function OptionsPanel({ reminderInputOpen, viewRemindersOpen, setReminderInputOpen, setViewRemindersOpen }: OptionsPanelProps) {
-    if( reminderInputOpen || viewRemindersOpen ) { return null }
-    
     const { logout } = useAuth()
 
+    if( reminderInputOpen || viewRemindersOpen ) { return null }
+    
     const handleLogout = async () => {
         await logout()
     }
 
     return (
-        <div className="w-max h-max p-2 bg-green-400 rounded-lg mx-auto mt-20 flex flex-col gap-4">
-            <h2 className="text-white text-2xl">What would you like to do?</h2>
+        <div className="w-max h-max p-2 rounded-lg mx-auto flex flex-col gap-4 bg-indigo-100 shadow-md">
+            <h2 className="text-lg inter-regular text-indigo-600">What would you like to do?</h2>
             <button 
-                className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max"
+                className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
                 onClick={() => {
                     setReminderInputOpen(true)
                 }}
             >Create Reminder</button>
             <button 
-                className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max" 
+                className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md" 
                 onClick={() => {
                     setViewRemindersOpen(true)
                 }} 
             >View My Reminders</button>
             <button 
-                className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max"
+                className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
                 onClick={handleLogout}
             >Logout</button>
         </div>

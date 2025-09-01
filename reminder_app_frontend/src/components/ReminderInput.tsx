@@ -9,21 +9,30 @@ type ReminderInputProps = {
 
 export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
 
+    // these values will make up the new reminder
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [reminderTime, setReminderTime] = useState('')
 
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
+        // here get the access token by first fetching the auth session
         const session = await fetchAuthSession()
         const accessToken = session.tokens?.accessToken?.toString()
 
+        // if there is no token we have an error
         if (!accessToken) {
             console.error('No access token available')
             return
         }
+
+        if(!title || !description || !reminderTime){
+            alert('Please complete all fields')
+        }
     
+        // package the reminder data in an object
         const reminderData = {
             title,
             description,
@@ -32,6 +41,7 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
         }
 
         try{
+            // pass the reminder to our front end api
             const result = await addReminder(reminderData)
             console.log('Reminder added successfully:', result)
             setTitle('')
@@ -44,30 +54,30 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
 
     return(
         <>
-        <div className="w-max h-max p-2 bg-green-400 rounded-lg mx-auto mt-20">
+        <div className="w-max h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto">
             <form 
             onSubmit={handleSubmit}
             className="flex flex-col">
-                <p>Title</p>
+                <p className="inter-bold text-indigo-600">Title</p>
                 <input 
                     value={title}
                     onChange={(e) => {
                         setTitle(e.target.value)
                     }}
                     placeholder="eg. Get flowers"
-                    className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2"
+                    className="shadow-md bg-white rounded-md pl-2 my-2"
                     />
-                <p className="mt-4">Description</p>
-                <p className="italic">This is the actual content of your reminder</p>
+                <p className="mt-4 inter-bold text-indigo-600">Description</p>
+                <p className="italic text-indigo-600">This is the actual content of your reminder</p>
                 <textarea 
                     onChange={(e) => {
                         setDescription(e.target.value)
                     }}
                     value={description}
                     placeholder="Pick up tulips for Emily at Charlie's"
-                    className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2 w-9/10"
+                    className="bg-white rounded-md shadow-md pl-2 my-2 w-9/10"
                     />
-                <p className="mt-4">Reminder Time</p>
+                <p className="mt-4 inter-bold text-indigo-600">Reminder Time</p>
                 <input 
                     value={reminderTime}
                     onChange={(e) => {
@@ -75,22 +85,25 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                     }}
                     type="datetime-local"
                     placeholder="Select date and time"
-                    className="border-2 border-yellow-300 bg-white rounded-md pl-2 my-2"
+                    className="shadow-md bg-white rounded-md pl-2 my-2"
                     />
-                <button 
-                className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max"
-                type="submit"
-                >
-                    Save Reminder
-                </button>
+                <div className="flex justify-between">
+                    <button 
+                    className="bg-indigo-400 px-2 rounded-md text-white w-max shadow-md"
+                    type="submit"
+                    >
+                        Save Reminder
+                    </button>
+                    <button
+                    onClick={() => {
+                        setReminderInputOpen(false)
+                    }}
+                    className="bg-indigo-400 px-2 shadow-md px-2 rounded-md text-white w-max ml-10"
+                    >Go Back</button>
+                </div>
             </form>
         </div>
-        <button
-        onClick={() => {
-            setReminderInputOpen(false)
-        }}
-        className="bg-green-400 border-2 border-yellow-300 px-2 rounded-md text-white w-max ml-10 mt-6"
-        >Go Back</button>
+        
         </>
     )
 }
