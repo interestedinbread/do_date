@@ -23,8 +23,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }, [])
 
     const login = async (email: string, password: string) => {
-        const signedInUser = await signIn({ username: email, password });
-        setUser(signedInUser)
+        try {
+            const signInResult = await signIn({ username: email, password });
+
+            if(signInResult.isSignedIn) {
+                const currentUser = await getCurrentUser()
+                setUser(currentUser);
+                return currentUser;
+            } 
+        } catch (err) {
+            console.error('Error signing in user:', err)
+            throw err;
+        }
+
     }
 
     const register = async (username: string, email: string, password: string) => {

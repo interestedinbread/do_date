@@ -83,11 +83,12 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                     onChange={(e) => {
                        setReminderTime(e.target.value) 
                     }}
+                    // this input type creates a string with the format: YYYY-MM-DDTHH:mm. This is local time.
                     type="datetime-local"
                     placeholder="Select date and time"
                     className="shadow-md bg-white rounded-md pl-2 my-2"
                     />
-                <div className="flex justify-between">
+                <div className="flex justify-between my-2">
                     <button 
                     className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                     type="submit"

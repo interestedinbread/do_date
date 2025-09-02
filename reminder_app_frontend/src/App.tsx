@@ -20,8 +20,8 @@ function App() {
   const [viewRemindersOpen, setViewRemindersOpen] = useState(false)
 
   useEffect(() => {
-
-  })
+    console.log('User object:', user)
+  }, [user])
 
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-10">

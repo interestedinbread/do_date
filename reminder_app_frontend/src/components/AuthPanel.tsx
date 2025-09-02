@@ -25,6 +25,7 @@ const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try{
+        //  send username and password to amplify auth using the login function we set up in our auth provider file
         const user = await login(username, password)
         console.log("logged in:", user)
         setAuthPanelOpen(false)
@@ -37,6 +38,7 @@ const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try{
+        // send user data to amplify auth using function from auth provider
         await register(username, email, password)
         console.log("Registered successfully");
         setAuthPanelOpen(false)
@@ -95,8 +97,6 @@ const handleRegister = async (e: React.FormEvent) => {
                     setLoggingIn(prev => !prev)
                     setRegistering(prev => !prev)
                 }}>{loggingIn ? "Register" : "Login"}</button>
-                {/* <button className="shadow-md bg-white text-green-500 p-1 rounded-md w-max mt-2"
-                onClick={() => setAuthPanelOpen(false)}>Go Back</button> */}
             </div>
         </div>
     )

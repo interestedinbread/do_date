@@ -7,11 +7,16 @@ type OptionsPanelProps = {
     setViewRemindersOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function OptionsPanel({ reminderInputOpen, viewRemindersOpen, setReminderInputOpen, setViewRemindersOpen }: OptionsPanelProps) {
+export function OptionsPanel({ reminderInputOpen, 
+    viewRemindersOpen, 
+    setReminderInputOpen, 
+    setViewRemindersOpen }: OptionsPanelProps) {
+    
     const { logout } = useAuth()
 
     if( reminderInputOpen || viewRemindersOpen ) { return null }
     
+    // amplify logout is set up in our auth provider
     const handleLogout = async () => {
         await logout()
     }
