@@ -18,6 +18,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [reminderInputOpen, setReminderInputOpen] = useState(false)
   const [viewRemindersOpen, setViewRemindersOpen] = useState(false)
+  const [verifying, setVerifying] = useState(false)
 
   useEffect(() => {
     console.log('User object:', user)
@@ -32,12 +33,15 @@ function App() {
             setPhoneNumber={setPhoneNumber}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
+            verifying={verifying}
+            setVerifying={setVerifying}
             />
             <OptionsPanel 
             reminderInputOpen={reminderInputOpen}
             viewRemindersOpen={viewRemindersOpen}
             setReminderInputOpen={setReminderInputOpen}
             setViewRemindersOpen={setViewRemindersOpen}
+            verifying={verifying}
             />
             {reminderInputOpen && 
               <ReminderInput 

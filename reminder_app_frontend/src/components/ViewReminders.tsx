@@ -106,7 +106,7 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
             <div className="h-max p-4 bg-indigo-100 shadow-md rounded-lg mx-auto w-9/10 mt-10">
                     { loading ? (
                         // if we are loading we display this message :)
-                        <p>Loading Reminders...</p>
+                        <p className="inter-bold text-indigo-600 my-2">Loading Reminders...</p>
                     ) : reminders.length === 0 ? (
                         // if we have finished loading but there no reminders...
                         <p>No reminders found!</p>

@@ -7,9 +7,16 @@ type VerifyPhoneProps = {
     setPhoneNumber: (phoneNumber: string) => void
     isLoading: boolean
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+    verifying: boolean
+    setVerifying: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoading }: VerifyPhoneProps) {
+export function VerifyPhone({ phoneNumber, 
+    setPhoneNumber, 
+    isLoading, 
+    setIsLoading,
+    verifying,
+    setVerifying }: VerifyPhoneProps) {
 
     const [verificationCode, setVerificationCode] = useState('')
     // this will alternate when the user has submitted a number and needs to input confirmation code.
@@ -23,6 +30,7 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
 
     async function handleCheckPhoneVerification() {
         try {
+            setVerifying(true)
             // get accesstoken from session object by calling fetchAuthSession
             const session = await fetchAuthSession()
             const accessToken = session.tokens?.accessToken?.toString()
@@ -43,6 +51,8 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
 
         } catch (err) {
             console.error('Error checking phone verification status:', err)
+        } finally {
+            setVerifying(false)
         }
     }
 
@@ -84,39 +94,48 @@ export function VerifyPhone({ phoneNumber, setPhoneNumber, isLoading, setIsLoadi
         }
     }
 
-    return(
-        <>
-        {!phoneVerified && <div className="bg-indigo-100 shadow-md rounded-lg p-2 w-9/10 mt-10 mx-auto">
-        {!verificationNeeded ? (
-            <form onSubmit={handleUpdatePhoneNumber}
-            className="flex flex-col">
-                <h4 className="text-indigo-600 inter-regular text-lg">Enter your phone number below to start setting reminders!</h4>
-                <input className="shadow-md bg-white rounded-md pl-2 my-2 w-max"
-                placeholder="e.g. +11234567890"
-                value={phoneNumber || ''}
-                onChange={(e) => 
-                    setPhoneNumber(e.target.value)
-                }/>
-                <button type="submit"
-                className="bg-white text-green-600 rounded-md px-2 w-max shadow-md my-2">Set phone number</button>
-            </form>
-        ) : (
-            <form onSubmit={handleConfirmPhoneNumber}>
-                <h4 className="text-white text-xl">Enter the verification code sent to your phone</h4>
-                <input className="shadow-md bg-white text-gray-600 rounded-md pl-2 my-2 w-max"
-                placeholder="Enter 6-digit code"
-                value={verificationCode}
-                onChange={(e) => 
-                    setVerificationCode(e.target.value)
-                }/>
-                <button type="submit"
-                disabled={isLoading}
-                className="bg-white text-green-600 shadow-md rounded-md p-2">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
-            </form>
-        )
-        }
-        </div>}
+    if(phoneVerified){
+        return null
+    }
 
-        </>
+    return(
+       <>
+
+        {verifying ? (<div>
+            <h2 className="text-indigo-600 inter-regular text-center mt-10 text-lg">Verifying Phone...</h2>
+            </div>
+            ) : (
+            <div className="bg-indigo-100 shadow-md rounded-lg p-2 w-9/10 mt-10 mx-auto">
+                {!verificationNeeded ? (
+                    <form onSubmit={handleUpdatePhoneNumber}
+                    className="flex flex-col">
+                    <h4 className="text-indigo-600 inter-regular text-lg">Enter your phone number below to start setting reminders!</h4>
+                    <input className="shadow-md bg-white rounded-md pl-2 my-2 w-max"
+                    placeholder="e.g. +11234567890"
+                    value={phoneNumber || ''}
+                    onChange={(e) => 
+                        setPhoneNumber(e.target.value)
+                    }/>
+                    <button type="submit"
+                    className="bg-white text-green-600 rounded-md px-2 w-max shadow-md my-2">Set phone number</button>
+                    </form>
+                ) : (
+                    <form onSubmit={handleConfirmPhoneNumber}>
+                    <h4 className="text-white text-xl">Enter the verification code sent to your phone</h4>
+                    <input className="shadow-md bg-white text-gray-600 rounded-md pl-2 my-2 w-max"
+                    placeholder="Enter 6-digit code"
+                    value={verificationCode}
+                    onChange={(e) => 
+                        setVerificationCode(e.target.value)
+                    }/>
+                    <button type="submit"
+                    disabled={isLoading}
+                    className="bg-white text-green-600 shadow-md rounded-md p-2">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
+                    </form>
+                )
+                }
+            </div>)
+        }
+    </> 
     )
 }
