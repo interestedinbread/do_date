@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "./contexts/useAuth.ts"
+import { useTheme } from "@aws-amplify/ui-react"
 
 type AuthPanelProps = {
     setAuthPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -7,19 +8,24 @@ type AuthPanelProps = {
     setLoggingIn: React.Dispatch<React.SetStateAction<boolean>>
     registering: boolean
     setRegistering: React.Dispatch<React.SetStateAction<boolean>>
+    setShowError: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
 export function AuthPanel( { 
     setAuthPanelOpen,
     loggingIn,
     setLoggingIn,
-    setRegistering
+    setRegistering,
+    setShowError,
+    setErrorMessage
  }: AuthPanelProps) {
 
 const [username, setUsername] = useState('')
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
 const { login, register } = useAuth()
+
 
 const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +37,9 @@ const handleLogin = async (e: React.FormEvent) => {
         setAuthPanelOpen(false)
     } catch (err) {
         console.error("Error loggin in:", err)
+        setAuthPanelOpen(false)
+        setErrorMessage('Error logging in. Please check credentials.')
+        setShowError(true)
     }
     }
 
@@ -44,6 +53,9 @@ const handleRegister = async (e: React.FormEvent) => {
         setAuthPanelOpen(false)
     } catch (err) {
         console.error("Error registering:", err)
+        setAuthPanelOpen(false)
+        setErrorMessage('Error registering. Please check credentials.')
+        setShowError(true)
     }
 }
 
@@ -56,11 +68,12 @@ const handleRegister = async (e: React.FormEvent) => {
                 loggingIn? handleLogin : handleRegister
             }>
 
-                <p className="text-indigo-600 inter-bold">Enter a username</p>
+                <p className="text-indigo-600 inter-bold">{loggingIn ? "Enter your username" : "Create a username"}</p>
                 <input 
                 className="shadow-md bg-white text-gray-600 rounded-md pl-2 mt-2"
                 type="text" 
                 placeholder="username"
+                value={username}
                 onChange={(e) => {
                     setUsername(e.target.value)
                 }}/>
@@ -71,6 +84,7 @@ const handleRegister = async (e: React.FormEvent) => {
                     className="shadow-md bg-white text-gray-600 rounded-md mt-2 pl-2"
                     type="email" 
                     placeholder="email goes here"
+                    value={email}
                     onChange={(e) => {
                         setEmail(e.target.value)
                     }}/>
@@ -81,6 +95,7 @@ const handleRegister = async (e: React.FormEvent) => {
                 className="shadow-md bg-white text-gray-600 rounded-md pl-2 mt-2"
                 type="password" 
                 placeholder="password"
+                value={password}
                 onChange={(e) => {
                     setPassword(e.target.value)
                 }}/>
@@ -96,6 +111,9 @@ const handleRegister = async (e: React.FormEvent) => {
                 onClick={() => {
                     setLoggingIn(prev => !prev)
                     setRegistering(prev => !prev)
+                    setUsername('')
+                    setPassword('')
+                    setEmail('')
                 }}>{loggingIn ? "Register" : "Login"}</button>
             </div>
         </div>

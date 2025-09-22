@@ -6,19 +6,35 @@ import { VerifyPhone } from "./components/VerifyPhone"
 import { OptionsPanel } from "./components/OptionsPanel"
 import { ReminderInput } from "./components/ReminderInput"
 import { ViewReminders } from "./components/ViewReminders"
+import { ErrorModal } from "./components/ErrorModal"
 
 
 function App() {
 
+  // this will conditionally render the AuthPanel component
   const [authPanelOpen, setAuthPanelOpen] = useState(false)
+
+  // these will be passed to AuthPanel 
   const [loggingIn, setLoggingIn] = useState(true)
   const [registering, setRegistering] = useState(false)
+
+  // the user object will confirm user authentication
   const { user } = useAuth()
+
+  // these will be passed to VerifyPhone
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  
+  // these will be passed to OptionsPanel and will conditionally render components
   const [reminderInputOpen, setReminderInputOpen] = useState(false)
   const [viewRemindersOpen, setViewRemindersOpen] = useState(false)
+
+  // this will be passed to VerifyPhone and OptionsPanel for conditional rendering
   const [verifying, setVerifying] = useState(false)
+
+  const [showError, setShowError] = useState(false)
+
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     console.log('User object:', user)
@@ -52,13 +68,28 @@ function App() {
           </>
          ) : (
           <>
-            {!authPanelOpen && <Header setAuthPanelOpen={setAuthPanelOpen}/>}
-            {authPanelOpen && <AuthPanel setAuthPanelOpen={setAuthPanelOpen}
-            loggingIn={loggingIn}
-            setLoggingIn={setLoggingIn}
-            registering={registering}
-            setRegistering={setRegistering}/>}
+            {authPanelOpen ? (
+                    <AuthPanel 
+                        setAuthPanelOpen={setAuthPanelOpen}
+                        loggingIn={loggingIn}
+                        setLoggingIn={setLoggingIn}
+                        registering={registering}
+                        setRegistering={setRegistering}
+                        setShowError={setShowError}
+                        setErrorMessage={setErrorMessage}
+                    />
+                ) : (
+                    <Header setAuthPanelOpen={setAuthPanelOpen}/>
+                )}
           </>
+         )}
+         {showError && (
+          <ErrorModal 
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            setShowError={setShowError}
+            setAuthPanelOpen={setAuthPanelOpen}
+            />
          )}
     </div>
   )
