@@ -9,6 +9,8 @@ type VerifyPhoneProps = {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
     verifying: boolean
     setVerifying: React.Dispatch<React.SetStateAction<boolean>>
+    phoneVerified: boolean,
+    setPhoneVerified: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export function VerifyPhone({ phoneNumber, 
@@ -16,13 +18,15 @@ export function VerifyPhone({ phoneNumber,
     isLoading, 
     setIsLoading,
     verifying,
-    setVerifying }: VerifyPhoneProps) {
+    setVerifying,
+    phoneVerified,
+    setPhoneVerified }: VerifyPhoneProps) {
 
     const [verificationCode, setVerificationCode] = useState('')
     // this will alternate when the user has submitted a number and needs to input confirmation code.
     const [verificationNeeded, setVerificationNeeded] = useState(false)
 
-    const [phoneVerified, setPhoneVerified] = useState(false)
+    
 
     useEffect(() => {
         handleCheckPhoneVerification()
@@ -130,7 +134,7 @@ export function VerifyPhone({ phoneNumber,
                     }/>
                     <button type="submit"
                     disabled={isLoading}
-                    className="bg-white text-green-600 shadow-md rounded-md p-2">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
+                    className="bg-white text-green-600 shadow-md rounded-md">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
                     </form>
                 )
                 }

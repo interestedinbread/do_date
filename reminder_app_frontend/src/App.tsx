@@ -31,9 +31,9 @@ function App() {
 
   // this will be passed to VerifyPhone and OptionsPanel for conditional rendering
   const [verifying, setVerifying] = useState(false)
+  const [phoneVerified, setPhoneVerified] = useState(false)
 
   const [showError, setShowError] = useState(false)
-
   const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function App() {
   }, [user])
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-10">
+    <div className="h-screen w-screen bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-16">
         {user ? (
           <>
             <VerifyPhone 
@@ -51,14 +51,16 @@ function App() {
             setIsLoading={setIsLoading}
             verifying={verifying}
             setVerifying={setVerifying}
+            phoneVerified={phoneVerified}
+            setPhoneVerified={setPhoneVerified}
             />
-            <OptionsPanel 
+            {phoneVerified && <OptionsPanel 
             reminderInputOpen={reminderInputOpen}
             viewRemindersOpen={viewRemindersOpen}
             setReminderInputOpen={setReminderInputOpen}
             setViewRemindersOpen={setViewRemindersOpen}
             verifying={verifying}
-            />
+            />}
             {reminderInputOpen && 
               <ReminderInput 
               setReminderInputOpen={setReminderInputOpen}/>}

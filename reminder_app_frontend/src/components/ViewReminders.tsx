@@ -103,6 +103,17 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
 
     return(
         <>
+            <div className="h-max p-4 bg-indigo-100 shadow-md rounded-lg mx-auto w-9/10 grid grid-cols-4">
+                <div className="col-span-3">
+                    <p className="inter-bold text-indigo-600 text-xl">
+                        {showUpcomingReminders ? "Upcoming Reminders" : "Sent Reminders"}
+                    </p>
+                    <p className="italic mt-2">{showUpcomingReminders ? "Future-you will be proud!" : "Past-you came through!"}</p>
+                </div>
+                <div className="col-span-1">
+                    <img src="/img/noun-schedule-256135-4C25E1.png" className="h-[75px] w-[75px]"/>
+                </div>
+            </div>
             <div className="h-max p-4 bg-indigo-100 shadow-md rounded-lg mx-auto w-9/10 mt-10">
                     { loading ? (
                         // if we are loading we display this message :)

@@ -54,6 +54,16 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
 
     return(
         <>
+        <div className="w-9/10 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto mb-8 grid grid-cols-4 gap-4">
+            <div className="col-span-3">
+                <p className="inter-bold text-indigo-600 text-xl">Create your new reminder</p>
+                <p className="italic my-2">Your reminder will be sent to you by text at your chosen time.</p>
+            </div>
+            <div className="col-span-1">
+                <img src="/img/noun-schedule-256135-4C25E1.png"
+                className="h-[75px] w-[75px]" />
+            </div>
+        </div>
         <div className="w-max h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto">
             <form 
             onSubmit={handleSubmit}
@@ -64,7 +74,7 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                     onChange={(e) => {
                         setTitle(e.target.value)
                     }}
-                    placeholder="eg. Get flowers"
+                    placeholder="eg. Pick up Emily"
                     className="shadow-md bg-white rounded-md pl-2 my-2"
                     />
                 <p className="mt-4 inter-bold text-indigo-600">Description</p>
@@ -74,7 +84,7 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                         setDescription(e.target.value)
                     }}
                     value={description}
-                    placeholder="Pick up tulips for Emily at Charlie's"
+                    placeholder="Pick up Emily at the airport tonight"
                     className="bg-white rounded-md shadow-md pl-2 my-2 w-9/10"
                     />
                 <p className="mt-4 inter-bold text-indigo-600">Reminder Time</p>
@@ -103,6 +113,15 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
                     >Go Back</button>
                 </div>
             </form>
+        </div>
+        <div className="w-9/10 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto grid grid-cols-4 mt-8">
+            <div className="col-span-1">
+                <img src="/img/noun-clock-8026515-4C25E1.png" 
+                className="h-[75px] w-[75px]"/>
+            </div>
+            <div className="col-span-3">
+                <p className="italic">You can view upcoming reminders and sent reminders from the previous menu.</p>
+            </div>
         </div>
         
         </>
