@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useAuth } from "./contexts/useAuth.ts"
-import { useTheme } from "@aws-amplify/ui-react"
 
 type AuthPanelProps = {
     setAuthPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
