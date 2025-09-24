@@ -21,10 +21,12 @@ interface ApiResponse {
     reminders?: Reminder[];
 }
 
+const API_BASE = import.meta.env.VITE_API_URL
+
 export const addReminder = async (reminderData: ReminderData): Promise<ApiResponse> => {  
     try{
 
-        const response = await fetch('http://localhost:3001/api/add-reminder', {
+        const response = await fetch(`${API_BASE}/api/add-reminder`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reminderData)
@@ -42,7 +44,8 @@ export const addReminder = async (reminderData: ReminderData): Promise<ApiRespon
 export const getReminders = async (accessToken: string | undefined) => {
 
     try{
-        const response = await fetch('http://localhost:3001/api/get-reminders', {
+        console.log(accessToken)
+        const response = await fetch(`${API_BASE}/api/get-reminders`, {
             method: 'GET',
             headers: { 
                 'Content-Type': 'application/json',
@@ -62,7 +65,7 @@ export const getReminders = async (accessToken: string | undefined) => {
 export const deleteReminder = async (reminderId: string, accessToken: string | undefined): Promise<ApiResponse> => {
 
     try {
-        const response = await fetch(`http://localhost:3001/api/delete-reminder/${reminderId}`, {
+        const response = await fetch(`${API_BASE}/api/delete-reminder/${reminderId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,8 +1,10 @@
 import { updateUserAttributes } from "aws-amplify/auth";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 export const checkPhoneVerificationStatus = async (accessToken: string): Promise<any> => {
     try {
-        const response = await fetch('http://localhost:3001/api/check-phone-verification', {
+        const response = await fetch(`${API_BASE}/api/check-phone-verification`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +34,7 @@ export const updatePhoneNumber = async (phoneNumber: string | null): Promise<any
 
         console.log("Phone number updated successfully:", result)
 
-        const response = await fetch('http://localhost:3001/api/send-verification-sms', {
+        const response = await fetch(`${API_BASE}/api/send-verification-sms`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ phoneNumber })
@@ -51,7 +53,7 @@ export const updatePhoneNumber = async (phoneNumber: string | null): Promise<any
 
 export const confirmPhoneNumber = async (phoneNumber: string | null, verificationCode: string, accessToken: string): Promise<any> => {
     try{
-        const response = await fetch('http://localhost:3001/api/verify-phone', {
+        const response = await fetch(`${API_BASE}/api/verify-phone`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
