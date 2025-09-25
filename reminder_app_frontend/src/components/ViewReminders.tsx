@@ -99,7 +99,7 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
                         <p className="inter-bold text-indigo-600 my-2">Loading Reminders...</p>
                     ) : reminders.length === 0 ? (
                         // if we have finished loading but there no reminders...
-                        <p>No reminders found!</p>
+                        <p className="italic mb-4">No reminders found!</p>
                     ) : (
                         // if we've finished loading and there ARE reminders...
                         <div className="w-full">{

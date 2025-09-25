@@ -10,18 +10,16 @@ export function Header({ setAuthPanelOpen }: HeaderProps ) {
             <div className="bg-indigo-100 shadow-md rounded-lg p-4 w-9/10 mx-auto">
                 <div className="flex justify-between">
                     <div className="">
-                        <h2 className="inter-bold text-5xl text-indigo-600">
+                        <h2 className="montserrat-bold-italic text-5xl text-indigo-600 ml-2">
                             Do Date
                         </h2>
-                        <h4 className="inter-regular text-indigo-600 text-lg my-2">Do future you a favor!</h4>
+                        <h4 className="inter-regular text-indigo-600 text-lg mt-2 ml-4">Do future-you a favor!</h4>
                     </div>
                     <div>
                         <img src="/img/noun-schedule-256135-4C25E1.png"
                         className="h-[85px] w-[85px]"/>
                     </div>
                 </div>
-                <button className="bg-white px-2 rounded-md text-green-600 w-max shadow-md my-2"
-                onClick={() => setAuthPanelOpen(true)}>Begin</button>
             </div>
             <div className="bg-indigo-100 shadow-md rounded-lg p-4 mt-8 w-9/10 mx-auto">
                 <p className="inter-bold text-indigo-600 text-xl">What is it?</p>
@@ -45,7 +43,15 @@ export function Header({ setAuthPanelOpen }: HeaderProps ) {
                     <img src="/img/noun-success-8043471-007435.png" className="h-[50px] w-[50px]"></img>
                 </div>
             </div>
-            
+            <div className="bg-indigo-100 shadow-md rounded-lg p-4 w-2/3 flex justify-between mt-8 ml-5">
+                <div>
+                    <p className="italic">Ready to get started?</p>
+                </div>
+                <div>
+                    <button className="bg-white px-2 rounded-md text-green-600 w-max shadow-md"
+                    onClick={() => setAuthPanelOpen(true)}>Begin</button>
+                </div>
+            </div>
         </>
     )
 }
