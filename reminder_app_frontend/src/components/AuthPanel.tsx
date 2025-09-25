@@ -7,8 +7,8 @@ type AuthPanelProps = {
     setLoggingIn: React.Dispatch<React.SetStateAction<boolean>>
     registering: boolean
     setRegistering: React.Dispatch<React.SetStateAction<boolean>>
-    setShowError: React.Dispatch<React.SetStateAction<boolean>>
-    setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setModalMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
 export function AuthPanel( { 
@@ -16,8 +16,8 @@ export function AuthPanel( {
     loggingIn,
     setLoggingIn,
     setRegistering,
-    setShowError,
-    setErrorMessage
+    setShowModal,
+    setModalMessage
  }: AuthPanelProps) {
 
 const [username, setUsername] = useState('')
@@ -36,9 +36,8 @@ const handleLogin = async (e: React.FormEvent) => {
         setAuthPanelOpen(false)
     } catch (err) {
         console.error("Error loggin in:", err)
-        setAuthPanelOpen(false)
-        setErrorMessage('Error logging in. Please check credentials.')
-        setShowError(true)
+        setModalMessage('Error logging in. Please check credentials.')
+        setShowModal(true)
     }
     }
 
@@ -53,8 +52,8 @@ const handleRegister = async (e: React.FormEvent) => {
     } catch (err) {
         console.error("Error registering:", err)
         setAuthPanelOpen(false)
-        setErrorMessage('Error registering. Please check credentials.')
-        setShowError(true)
+        setModalMessage('Error registering. Please check credentials.')
+        setShowModal(true)
     }
 }
 

@@ -6,7 +6,7 @@ import { VerifyPhone } from "./components/VerifyPhone"
 import { OptionsPanel } from "./components/OptionsPanel"
 import { ReminderInput } from "./components/ReminderInput"
 import { ViewReminders } from "./components/ViewReminders"
-import { ErrorModal } from "./components/ErrorModal"
+import { Modal } from "./components/Modal"
 
 
 function App() {
@@ -33,8 +33,8 @@ function App() {
   const [verifying, setVerifying] = useState(false)
   const [phoneVerified, setPhoneVerified] = useState(false)
 
-  const [showError, setShowError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
 
   useEffect(() => {
     console.log('User object:', user)
@@ -63,7 +63,9 @@ function App() {
             />}
             {reminderInputOpen && 
               <ReminderInput 
-              setReminderInputOpen={setReminderInputOpen}/>}
+              setReminderInputOpen={setReminderInputOpen}
+              setModalMessage={setModalMessage}
+              setShowModal={setShowModal}/>}
             {viewRemindersOpen && 
               <ViewReminders 
               setViewRemindersOpen={setViewRemindersOpen}/>}
@@ -77,19 +79,19 @@ function App() {
                         setLoggingIn={setLoggingIn}
                         registering={registering}
                         setRegistering={setRegistering}
-                        setShowError={setShowError}
-                        setErrorMessage={setErrorMessage}
+                        setShowModal={setShowModal}
+                        setModalMessage={setModalMessage}
                     />
                 ) : (
                     <Header setAuthPanelOpen={setAuthPanelOpen}/>
                 )}
           </>
          )}
-         {showError && (
-          <ErrorModal 
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-            setShowError={setShowError}
+         {showModal && (
+          <Modal 
+            modalMessage={modalMessage}
+            setModalMessage={setModalMessage}
+            setShowModal={setShowModal}
             setAuthPanelOpen={setAuthPanelOpen}
             />
          )}

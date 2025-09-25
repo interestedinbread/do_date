@@ -5,9 +5,15 @@ import { fetchAuthSession } from "aws-amplify/auth"
 
 type ReminderInputProps = {
     setReminderInputOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setModalMessage: React.Dispatch<React.SetStateAction<string>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
+export function ReminderInput({ 
+    setReminderInputOpen,
+    setModalMessage,
+    setShowModal
+ }: ReminderInputProps) {
 
     // these values will make up the new reminder
     const [title, setTitle] = useState('')
@@ -29,7 +35,8 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
         }
 
         if(!title || !description || !reminderTime){
-            alert('Please complete all fields')
+            setModalMessage('Please provide complete information')
+            setShowModal(true)
         }
     
         // package the reminder data in an object
@@ -47,6 +54,8 @@ export function ReminderInput({ setReminderInputOpen }: ReminderInputProps) {
             setTitle('')
             setDescription('')
             setReminderTime('')
+            setModalMessage('Reminder added!')
+            setShowModal(true)
         } catch (err) {
             console.error('Failed to add reminder:', err)
         }
