@@ -36,7 +36,7 @@ const handleLogin = async (e: React.FormEvent) => {
         setAuthPanelOpen(false)
     } catch (err) {
         console.error("Error loggin in:", err)
-        setModalMessage('Error logging in. Please check credentials.')
+        setModalMessage("We couldn't log you in! Please double check your username and password.")
         setShowModal(true)
     }
     }
@@ -54,68 +54,74 @@ const handleRegister = async (e: React.FormEvent) => {
         setRegistering(false)
     } catch (err) {
         console.error("Error registering:", err)
-        setModalMessage('Error registering. Please check credentials.')
+        setModalMessage("Could not complete registration. Please make sure you have filled the inputs correctly!")
         setShowModal(true)
     }
 }
 
 
     return(
-        <div className="w-2/3 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto">
-            <form 
-            className="flex flex-col"
-            onSubmit={
-                loggingIn? handleLogin : handleRegister
-            }>
-
-                <p className="text-indigo-600 inter-bold">{loggingIn ? "Enter your username" : "Create a username"}</p>
-                <input 
-                className="shadow-md bg-white text-gray-600 rounded-md pl-2 mt-2"
-                type="text" 
-                placeholder="username"
-                value={username}
-                onChange={(e) => {
-                    setUsername(e.target.value)
-                }}/>
-                {!loggingIn && 
-                <>
-                    <p className="text-indigo-600 inter-bold mt-2">Enter your email</p>
-                    <input 
-                    className="shadow-md bg-white text-gray-600 rounded-md mt-2 pl-2"
-                    type="email" 
-                    placeholder="email goes here"
-                    value={email}
-                    onChange={(e) => {
-                        setEmail(e.target.value)
-                    }}/>
-                </>
-                }
-                <p className="text-indigo-600 inter-bold mt-2">{loggingIn ? "Enter your password" : "Create a password"}</p>
-                <input 
-                className="shadow-md bg-white text-gray-600 rounded-md pl-2 mt-2"
-                type="password" 
-                placeholder="password"
-                value={password}
-                onChange={(e) => {
-                    setPassword(e.target.value)
-                }}/>
-
-                <button type="submit"
-                className="bg-white px-2 rounded-md text-green-500 w-max shadow-md my-2">Submit</button>
-                
-            </form>
-
-            <div className="flex flex-col">
-                <p className="text-indigo-600 inter-bold">{loggingIn ? "Need to create an account?" : "Already a user?"}</p>
-                <button className="shadow-md bg-white text-green-500 p-1 rounded-md w-max mt-1"
-                onClick={() => {
-                    setLoggingIn(prev => !prev)
-                    setRegistering(prev => !prev)
-                    setUsername('')
-                    setPassword('')
-                    setEmail('')
-                }}>{loggingIn ? "Register" : "Login"}</button>
+        <>
+            <div className="w-2/3 mx-auto flex justify-between px-8">
+                <h2 className="inter-bold text-3xl text-indigo-600 text-center mb-4">{loggingIn ? 'Login' : 'Register'}</h2>
+                <img src="/img/noun-sign-up-6478-007435.png" className="h-[40px] w-[40px]"></img>
             </div>
-        </div>
+            <div className="w-2/3 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto">
+                <form 
+                className="flex flex-col"
+                onSubmit={
+                    loggingIn? handleLogin : handleRegister
+                }>
+
+                    <p className="text-indigo-600 inter-bold">{loggingIn ? "Enter your username" : "Create a username"}</p>
+                    <input 
+                    className="shadow-md bg-white text-gray-600 rounded-md pl-2 mt-2"
+                    type="text" 
+                    placeholder="username"
+                    value={username}
+                    onChange={(e) => {
+                        setUsername(e.target.value)
+                    }}/>
+                    {!loggingIn && 
+                    <>
+                        <p className="text-indigo-600 inter-bold mt-2">Enter your email</p>
+                        <input 
+                        className="shadow-md bg-white text-gray-600 rounded-md mt-2 pl-2"
+                        type="email" 
+                        placeholder="email goes here"
+                        value={email}
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                        }}/>
+                    </>
+                    }
+                    <p className="text-indigo-600 inter-bold mt-2">{loggingIn ? "Enter your password" : "Create a password"}</p>
+                    <input 
+                    className="shadow-md bg-white text-gray-600 rounded-md pl-2 mt-2"
+                    type="password" 
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => {
+                        setPassword(e.target.value)
+                    }}/>
+
+                    <button type="submit"
+                    className="bg-white px-2 rounded-md text-green-500 w-max shadow-md my-2">Submit</button>
+                    
+                </form>
+
+                <div className="flex flex-col">
+                    <p className="text-indigo-600 inter-bold">{loggingIn ? "Need to create an account?" : "Already a user?"}</p>
+                    <button className="shadow-md bg-white text-green-500 p-1 rounded-md w-max mt-1"
+                    onClick={() => {
+                        setLoggingIn(prev => !prev)
+                        setRegistering(prev => !prev)
+                        setUsername('')
+                        setPassword('')
+                        setEmail('')
+                    }}>{loggingIn ? "Register" : "Login"}</button>
+                </div>
+            </div>
+        </>
     )
 }
