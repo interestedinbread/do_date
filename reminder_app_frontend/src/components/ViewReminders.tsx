@@ -34,18 +34,8 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
     const fetchReminders = async () => {
 
         try{
-            // here we grab the access token 
-            const session = await fetchAuthSession()
-            const accessToken = session.tokens?.accessToken?.toString()
-
-            // if check for no access token
-            if(!accessToken){
-                console.error('No access token available')
-                return
-            }
-
             // call function imported from our api folder
-            const result = await (getReminders(accessToken))
+            const result = await (getReminders())
             if(result.success && result.reminders) {
                 setReminders(result.reminders)
             }
@@ -69,18 +59,8 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
 
     const handleDeleteReminder = async (reminderId: string) => {
         try{
-            // grab access token
-            const session = await fetchAuthSession()
-            const accessToken = session.tokens?.accessToken?.toString()
-
-            // if check for no token
-            if (!accessToken){
-                console.error('No access token found')
-                return
-            }
-
             // call delete function from our front end api folder
-            const result = await deleteReminder(reminderId, accessToken)
+            const result = await deleteReminder(reminderId)
             if(!result.success){
                 throw new Error('Error deleting reminder')
             }

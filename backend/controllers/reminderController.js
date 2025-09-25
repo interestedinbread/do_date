@@ -15,18 +15,13 @@ const eventBridge = new EventBridgeClient({ region: process.env.AWS_REGION })
 
 exports.addReminder = async (req, res) => {
 
-    const { reminder_time, description, title, accessToken, timezone_offset } = req.body
-   
-    const result = await cognitoClient.send(new GetUserCommand({
-        AccessToken: accessToken
-    }))
+    const { reminder_time, description, title, timezone_offset } = req.body
 
-    const userId = result.UserAttributes.find(
+    const userId = req.user.UserAttributes.find(
         attr => attr.Name === "sub"
     )?.Value
 
     const reminderId = Date.now().toString() + Math.random().toString(36).substring(2, 9)
-
     const createdAt = new Date().toISOString()
 
     try{
@@ -65,12 +60,8 @@ exports.addReminder = async (req, res) => {
 }
 
 exports.getReminders = async (req, res) => {
-    const accessToken = req.headers['authorization']?.replace('Bearer ', '')
-    const user = await cognitoClient.send(new GetUserCommand({
-        AccessToken: accessToken
-    }))
 
-    const userId = user.UserAttributes.find(
+    const userId = req.user.UserAttributes.find(
         attr => attr.Name === 'sub'
     )?.Value
 
@@ -91,13 +82,10 @@ exports.getReminders = async (req, res) => {
 }
 
 exports.deleteReminder = async (req, res) => {
-    const accessToken = req.headers['authorization']?.replace('Bearer ', '')
-    const { reminderId } = req.params
-    const result = await cognitoClient.send(new GetUserCommand({
-        AccessToken: accessToken
-    }))
 
-    const userId = result.UserAttributes.find(
+    const { reminderId } = req.params
+
+    const userId = req.user.UserAttributes.find(
         attr => attr.Name === 'sub'
     )?.Value
 
