@@ -29,6 +29,9 @@ export const addReminder = async (reminderData: ReminderData): Promise<ApiRespon
         const session = await fetchAuthSession()
         const accessToken = session.tokens?.accessToken?.toString()
         
+        console.log('API_BASE:', API_BASE)
+        console.log('Access token length:', accessToken?.length)
+        
         if (!accessToken) {
             throw new Error('No access token available')
         }
