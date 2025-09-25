@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from "react"
 import { getReminders, deleteReminder } from "../api/reminderApi"
-import { fetchAuthSession } from "aws-amplify/auth"
 
 type ViewRemindersProps = {
     setViewRemindersOpen: React.Dispatch<React.SetStateAction<boolean>>
