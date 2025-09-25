@@ -53,6 +53,8 @@ function App() {
             setVerifying={setVerifying}
             phoneVerified={phoneVerified}
             setPhoneVerified={setPhoneVerified}
+            setShowModal={setShowModal}
+            setModalMessage={setModalMessage}
             />
             {phoneVerified && <OptionsPanel 
             reminderInputOpen={reminderInputOpen}

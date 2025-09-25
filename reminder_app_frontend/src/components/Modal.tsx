@@ -24,7 +24,7 @@ export function Modal({
             onClick={() => {
                 handleCloseModal()
             }}>
-            <div className="w-2/3 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto z-30 mt-50">
+            <div className="w-2/3 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto z-30 mt-40">
                 <p className="text-indigo-600 inter-bold">
                     {modalMessage}
                 </p>

@@ -48,10 +48,12 @@ const handleRegister = async (e: React.FormEvent) => {
         // send user data to amplify auth using function from auth provider
         await register(username, email, password)
         console.log("Registered successfully");
-        setAuthPanelOpen(false)
+        setModalMessage(`${username} is now registered! You may login to use Do Date`)
+        setShowModal(true)
+        setLoggingIn(true)
+        setRegistering(false)
     } catch (err) {
         console.error("Error registering:", err)
-        setAuthPanelOpen(false)
         setModalMessage('Error registering. Please check credentials.')
         setShowModal(true)
     }

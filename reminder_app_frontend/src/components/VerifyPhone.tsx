@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useAuth } from "./contexts/useAuth"
 import { fetchAuthSession } from "aws-amplify/auth"
 import { checkPhoneVerificationStatus, updatePhoneNumber, confirmPhoneNumber } from "../api/phoneApi"
 
@@ -11,22 +12,32 @@ type VerifyPhoneProps = {
     setVerifying: React.Dispatch<React.SetStateAction<boolean>>
     phoneVerified: boolean,
     setPhoneVerified: React.Dispatch<React.SetStateAction<boolean>>
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    setModalMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
-export function VerifyPhone({ phoneNumber, 
+export function VerifyPhone({ 
+    phoneNumber, 
     setPhoneNumber, 
     isLoading, 
     setIsLoading,
     verifying,
     setVerifying,
     phoneVerified,
-    setPhoneVerified }: VerifyPhoneProps) {
+    setPhoneVerified,
+    setShowModal,
+    setModalMessage 
+}: VerifyPhoneProps) {
 
     const [verificationCode, setVerificationCode] = useState('')
     // this will alternate when the user has submitted a number and needs to input confirmation code.
     const [verificationNeeded, setVerificationNeeded] = useState(false)
 
-    
+    const { logout } = useAuth()
+
+    const handleLogout = async () => {
+        await logout()
+    }
 
     useEffect(() => {
         handleCheckPhoneVerification()
@@ -89,6 +100,8 @@ export function VerifyPhone({ phoneNumber,
             console.log('Phone number verified successfully')
             setVerificationNeeded(false)
             setVerificationCode('')
+            setModalMessage('Phone number verified. You may now set reminders!')
+            setShowModal(true)
             await handleCheckPhoneVerification()
             
         } catch (err) {
@@ -113,15 +126,22 @@ export function VerifyPhone({ phoneNumber,
                 {!verificationNeeded ? (
                     <form onSubmit={handleUpdatePhoneNumber}
                     className="flex flex-col">
-                    <h4 className="text-indigo-600 inter-regular text-lg">Enter your phone number below to start setting reminders!</h4>
+                    <h4 className="italic text-lg">Enter your phone number below to start setting reminders!</h4>
                     <input className="shadow-md bg-white rounded-md pl-2 my-2 w-max"
                     placeholder="e.g. +11234567890"
                     value={phoneNumber || ''}
                     onChange={(e) => 
                         setPhoneNumber(e.target.value)
                     }/>
-                    <button type="submit"
-                    className="bg-white text-green-600 rounded-md px-2 w-max shadow-md my-2">Set phone number</button>
+                    <div className="flex gap-8">
+                        <button type="submit"
+                        className="bg-white text-green-600 rounded-md px-2 w-max shadow-md my-2">Set phone number</button>
+                        <button
+                        className="bg-white text-green-600 rounded-md px-2 w-max shadow-md my-2"
+                        onClick={() => {
+                            handleLogout()
+                        }}>Logout</button>
+                    </div>
                     </form>
                 ) : (
                     <form onSubmit={handleConfirmPhoneNumber}>
