@@ -135,6 +135,7 @@ export function VerifyPhone({
                     <form onSubmit={handleUpdatePhoneNumber}
                     className="flex flex-col">
                     <h4 className="italic text-lg">Enter your phone number below to start setting reminders!</h4>
+                    <p className="italic text-lg">Please also include your country code beginning with a + sign.</p>
                     <input className="shadow-md bg-white rounded-md pl-2 my-2 w-max"
                     placeholder="e.g. +11234567890"
                     value={phoneNumber || ''}

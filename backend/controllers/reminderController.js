@@ -1,12 +1,7 @@
-const twilio = require('twilio');
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb') 
 const { DynamoDBDocumentClient, PutCommand, DeleteCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
-const { CognitoIdentityProviderClient, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
 const { EventBridgeClient, PutRuleCommand, PutTargetsCommand } = require('@aws-sdk/client-eventbridge')
 
-const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
-
-const cognitoClient = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
 
 const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION });
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
@@ -15,7 +10,7 @@ const eventBridge = new EventBridgeClient({ region: process.env.AWS_REGION })
 
 exports.addReminder = async (req, res) => {
 
-    const { reminder_time, description, title, timezone_offset } = req.body
+    const { reminder_time, description, title, timezone } = req.body
 
     const userId = req.user.UserAttributes.find(
         attr => attr.Name === "sub"
@@ -39,7 +34,7 @@ exports.addReminder = async (req, res) => {
         }))
 
         try {
-            await eventBridgeHandler(userId, reminderId, reminder_time, timezone_offset)
+            await eventBridgeHandler(userId, reminderId, reminder_time, timezone)
         } catch (err) {
             await docClient.send(new DeleteCommand({
                 TableName: 'Reminders-3',
@@ -105,15 +100,16 @@ exports.deleteReminder = async (req, res) => {
     }
 }
 
-const eventBridgeHandler = async (userId, reminderId, reminder_time) => {
+const eventBridgeHandler = async (userId, reminderId, reminder_time, timezone) => {
     
     try{
 
         const localDate = new Date(reminder_time);
-
+        const utcDate = new Date(localDate.toLocaleString('en-US', { timeZone: timezone }));
         
-        const cronExpression = `cron(${localDate.getUTCMinutes()} ${localDate.getUTCHours()} ${localDate.getUTCDate()} ${localDate.getUTCMonth() + 1} ? ${localDate.getUTCFullYear()})`;
+        const cronExpression = `cron(${utcDate.getUTCMinutes()} ${utcDate.getUTCHours()} ${utcDate.getUTCDate()} ${utcDate.getUTCMonth() + 1} ? ${utcDate.getUTCFullYear()})`;
         console.log('cronExpression:', cronExpression)
+        console.log('User timezone:', timezone)
 
         await eventBridge.send(new PutRuleCommand({
             Name: `reminder-${reminderId}`,

@@ -24,27 +24,19 @@ export function ReminderInput({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        // here get the access token by first fetching the auth session
-        const session = await fetchAuthSession()
-        const accessToken = session.tokens?.accessToken?.toString()
-
-        // if there is no token we have an error
-        if (!accessToken) {
-            console.error('No access token available')
-            return
-        }
-
         if(!title || !description || !reminderTime){
             setModalMessage('Please provide complete information')
             setShowModal(true)
         }
+
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     
         // package the reminder data in an object
         const reminderData = {
             title,
             description,
             reminder_time: reminderTime,
-            accessToken
+            timezone: userTimezone,
         }
 
         try{
@@ -58,6 +50,8 @@ export function ReminderInput({
             setShowModal(true)
         } catch (err) {
             console.error('Failed to add reminder:', err)
+            setModalMessage('Failed to add reminder')
+            setShowModal(true)
         }
     }
 

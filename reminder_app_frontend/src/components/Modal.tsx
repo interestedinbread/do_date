@@ -25,7 +25,7 @@ export function Modal({
                 handleCloseModal()
             }}>
             <div className="w-2/3 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto z-30 mt-40">
-                <p className="text-indigo-600 inter-bold">
+                <p className="italic">
                     {modalMessage}
                 </p>
                 <button className="bg-white px-2 rounded-md text-green-500 w-max shadow-md my-2"

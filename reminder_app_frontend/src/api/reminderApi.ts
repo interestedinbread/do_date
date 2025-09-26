@@ -2,6 +2,7 @@ interface ReminderData {
     title: string;
     description: string;
     reminder_time: string;
+    timezone: string;
 }
 
 interface Reminder {
