@@ -105,9 +105,14 @@ const eventBridgeHandler = async (userId, reminderId, reminder_time, timezone) =
     try{
 
         const localDate = new Date(reminder_time);
-        const utcDate = new Date(localDate.toLocaleString('en-US', { timeZone: timezone }));
+
+        const utcDate = new Date(localDate.toLocaleString('en-US', { timeZone: 'UTC' }));
+        const userDate = new Date(localDate.toLocaleString('en-US', { timeZone: timezone }));
+        const offset = utcDate.getTime() - userDate.getTime();
+
+        const correctUtcDate = new Date(localDate.getTime() + offset);
         
-        const cronExpression = `cron(${utcDate.getUTCMinutes()} ${utcDate.getUTCHours()} ${utcDate.getUTCDate()} ${utcDate.getUTCMonth() + 1} ? ${utcDate.getUTCFullYear()})`;
+        const cronExpression = `cron(${correctUtcDate.getUTCMinutes()} ${correctUtcDate.getUTCHours()} ${correctUtcDate.getcorrectUtcDate()} ${correctUtcDate.getUTCMonth() + 1} ? ${correctUtcDate.getUTCFullYear()})`;
         console.log('cronExpression:', cronExpression)
         console.log('User timezone:', timezone)
 
