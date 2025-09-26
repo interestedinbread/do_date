@@ -29,6 +29,7 @@ export function ReminderInput({
         }
 
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        console.log('User timezone result', userTimezone)
     
         // package the reminder data in an object
         const reminderData = {
