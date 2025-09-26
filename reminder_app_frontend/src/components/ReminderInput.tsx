@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { addReminder } from "../api/reminderApi"
-import { fetchAuthSession } from "aws-amplify/auth"
 
 
 type ReminderInputProps = {
