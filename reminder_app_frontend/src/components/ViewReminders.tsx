@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react"
-import { getReminders, deleteReminder } from "../api/reminderApi"
+import { getReminders, deleteReminder, editReminder } from "../api/reminderApi"
 
 type ViewRemindersProps = {
     setViewRemindersOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -76,7 +76,9 @@ export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
         }
     }
 
-    
+    const handleEditReminder = async () => {
+        
+    }
 
     
 

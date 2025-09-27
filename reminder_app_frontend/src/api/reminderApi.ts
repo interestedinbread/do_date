@@ -106,3 +106,30 @@ export const deleteReminder = async (reminderId: string): Promise<ApiResponse> =
         throw err 
     }
 }
+
+export const editReminder = async (reminderId: string, reminderData: ReminderData): Promise<ApiResponse> => {
+    try{
+        const session = await fetchAuthSession()
+        const accessToken = session.tokens?.accessToken?.toString()
+
+        if(!accessToken) {
+            throw new Error('No access token availabel')
+        }
+
+        const response = await fetch(`${API_BASE}/api/edit-reminder/${reminderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type:': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(reminderData)
+        })
+        if(!response.ok){
+            throw new Error(`Failed to edit reminder: ${response.status}`)
+        }
+        return response.json()
+    } catch (err) {
+        console.error('Error:', err)
+        throw err
+    }
+}

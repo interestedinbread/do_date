@@ -100,6 +100,45 @@ exports.deleteReminder = async (req, res) => {
     }
 }
 
+exports.editReminder = async (req, res) => {
+    const { reminderId, title, description, reminder_time, timezone } = req.body;
+    const userId = req.user.UserAttributes.find(attr => attr.Name === "sub")?.Value;
+
+    try {
+
+        await docClient.send(new DeleteCommand({
+            TableName: 'Reminders-3',
+            Key: {
+                userId,
+                reminderId
+            }
+        }));
+
+        const newReminderId = Date.now().toString() + Math.random().toString(36).substring(2, 9);
+        const createdAt = new Date().toISOString();
+
+        await docClient.send(new PutCommand({
+            TableName: 'Reminders-3',
+            Item: {
+                userId,
+                reminderId: newReminderId,
+                createdAt,
+                title,
+                description,
+                reminder_time,
+                sent: false
+            }
+        }));
+
+        await eventBridgeHandler(userId, newReminderId, reminder_time, timezone);
+
+        res.json({ success: true, message: 'Reminder updated successfully' });
+    } catch (err) {
+        console.error('Error editing reminder:', err);
+        res.status(500).json({ success: false, message: 'Failed to edit reminder' });
+    }
+}
+
 const eventBridgeHandler = async (userId, reminderId, reminder_time, timezone) => {
     
     try{
