@@ -120,14 +120,14 @@ export function ViewReminders ({
                                                     // this converts the reminder time into a string with Canadian date formatting 
                                                     new Date(reminder.reminder_time).toLocaleString()
                                                 }</p>
-                                                <button className="inter-bold bg-white px-2 rounded-md text-green-500 w-max shadow-md"
+                                                {showUpcomingReminders && <button className="inter-bold bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                                                 onClick={() => {
                                                     setEditReminderId(reminder.reminderId)
                                                     setEditing(true)
                                                     setViewRemindersOpen(false)
                                                 }}>
                                                     Edit
-                                                </button>
+                                                </button>}
                                             </div>
                                         </> 
                                             ) : (

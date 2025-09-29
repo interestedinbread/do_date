@@ -130,12 +130,12 @@ export function VerifyPhone({
             <h2 className="text-indigo-600 inter-regular text-center mt-10 text-lg">Verifying Phone...</h2>
             </div>
             ) : (
-            <div className="bg-indigo-100 shadow-md rounded-lg p-2 w-9/10 mt-10 mx-auto">
+            <div className="bg-indigo-100 shadow-md rounded-lg p-4 w-9/10 mt-10 mx-auto">
                 {!verificationNeeded ? (
                     <form onSubmit={handleUpdatePhoneNumber}
                     className="flex flex-col">
                     <h4 className="italic text-lg">Enter your phone number below to start setting reminders!</h4>
-                    <p className="italic text-lg">Please also include your country code beginning with a + sign.</p>
+                    <p className="italic text-lg my-2">Please also include your country code beginning with a + sign.</p>
                     <input className="shadow-md bg-white rounded-md pl-2 my-2 w-max"
                     placeholder="e.g. +11234567890"
                     value={phoneNumber || ''}
@@ -169,6 +169,10 @@ export function VerifyPhone({
                 }
             </div>)
         }
+        <div className="bg-indigo-100 shadow-md rounded-lg p-4 w-9/10 mt-10 mx-auto flex gap-4">
+            <img src="/img/noun-cellphone-8069273-4C25E1.png" className="h-[50px] w-[50px]"/>
+            <p className="italic">Your reminders will arrive from <br /> +1 (970) 715-6584</p>
+        </div>
     </> 
     )
 }
