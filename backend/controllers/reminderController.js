@@ -101,7 +101,8 @@ exports.deleteReminder = async (req, res) => {
 }
 
 exports.editReminder = async (req, res) => {
-    const { reminderId, title, description, reminder_time, timezone } = req.body;
+    const { title, description, reminder_time, timezone } = req.body;
+    const { reminderId } = req.params
     const userId = req.user.UserAttributes.find(attr => attr.Name === "sub")?.Value;
 
     try {

@@ -113,13 +113,13 @@ export const editReminder = async (reminderId: string, reminderData: ReminderDat
         const accessToken = session.tokens?.accessToken?.toString()
 
         if(!accessToken) {
-            throw new Error('No access token availabel')
+            throw new Error('No access token available')
         }
 
         const response = await fetch(`${API_BASE}/api/edit-reminder/${reminderId}`, {
             method: 'POST',
             headers: {
-                'Content-Type:': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(reminderData)

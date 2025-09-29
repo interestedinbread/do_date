@@ -1,11 +1,11 @@
 import { useState, useEffect, useMemo } from "react"
-import { getReminders, deleteReminder, editReminder } from "../api/reminderApi"
+import { getReminders, deleteReminder } from "../api/reminderApi"
+import type { Reminder } from '../App'
 
 type ViewRemindersProps = {
     setViewRemindersOpen: React.Dispatch<React.SetStateAction<boolean>>
     reminders: Reminder[]
     setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>
-    editing: boolean
     setEditing: React.Dispatch<React.SetStateAction<boolean>>
     setEditReminderId: React.Dispatch<React.SetStateAction<string>>
 }
@@ -15,7 +15,6 @@ export function ViewReminders ({
     setViewRemindersOpen,
     reminders,
     setReminders,
-    editing,
     setEditing,
     setEditReminderId
 }: ViewRemindersProps) {
@@ -78,12 +77,7 @@ export function ViewReminders ({
         }
     }
 
-    const handleEditReminder = async () => {
-        
-    }
-
     
-
     return(
         <>
             <div className="h-max p-4 bg-indigo-100 shadow-md rounded-lg mx-auto w-9/10 grid grid-cols-4">
@@ -130,6 +124,7 @@ export function ViewReminders ({
                                                 onClick={() => {
                                                     setEditReminderId(reminder.reminderId)
                                                     setEditing(true)
+                                                    setViewRemindersOpen(false)
                                                 }}>
                                                     Edit
                                                 </button>

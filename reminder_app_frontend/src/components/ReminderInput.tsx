@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { addReminder } from "../api/reminderApi"
+import { useState, useEffect } from "react"
+import { addReminder, editReminder } from "../api/reminderApi"
 
 
 type ReminderInputProps = {
@@ -7,9 +7,7 @@ type ReminderInputProps = {
     setModalMessage: React.Dispatch<React.SetStateAction<string>>
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
     editing?: boolean
-    setEditing?: React.Dispatch<React.SetStateAction<boolean>>
     editReminderId?: string
-    setEditReminderId?: React.Dispatch<React.SetStateAction<string>>
     initialData?: {
         title: string,
         description: string,
@@ -23,8 +21,7 @@ export function ReminderInput({
     setModalMessage,
     setShowModal,
     editing,
-    setEditing,
-    setEditReminderId,
+    editReminderId,
     initialData,
     onEditComplete
  }: ReminderInputProps) {
@@ -34,6 +31,13 @@ export function ReminderInput({
     const [description, setDescription] = useState('')
     const [reminderTime, setReminderTime] = useState('')
 
+    useEffect(() => {
+        if(editing && initialData) {
+            setTitle(initialData.title)
+            setDescription(initialData.description)
+            setReminderTime(initialData.reminderTime)
+        }
+    }, [editing, initialData])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -41,6 +45,7 @@ export function ReminderInput({
         if(!title || !description || !reminderTime){
             setModalMessage('Please provide complete information')
             setShowModal(true)
+            return
         }
 
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -55,14 +60,25 @@ export function ReminderInput({
         }
 
         try{
-            // pass the reminder to our front end api
-            const result = await addReminder(reminderData)
-            console.log('Reminder added successfully:', result)
+            let result
+            if (editing && editReminderId) {
+                result = await editReminder(editReminderId, reminderData)
+                console.log('Reminder updated successfully:', result)
+            } else {
+                result = await addReminder(reminderData)
+                console.log('Reminder added successfully:', result)
+            }
+
             setTitle('')
             setDescription('')
             setReminderTime('')
-            setModalMessage('Reminder added!')
+            setModalMessage(editing ? 'Reminder updated!' : 'Reminder added!')
             setShowModal(true)
+            if(editing) {
+                onEditComplete?.()
+            }
+            
+
         } catch (err) {
             console.error('Failed to add reminder:', err)
             setModalMessage('Failed to add reminder')
@@ -125,14 +141,19 @@ export function ReminderInput({
                     </button>
                     <button
                     onClick={() => {
-                        setReminderInputOpen(false)
+                        if(editing){
+                            onEditComplete?.()
+                        } else {
+                            setReminderInputOpen(false)
+                        }
+                        
                     }}
                     className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                     >Go Back</button>
                 </div>
             </form>
         </div>
-        <div className="w-9/10 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto grid grid-cols-4 mt-8">
+        {!editing && <div className="w-9/10 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto grid grid-cols-4 mt-8">
             <div className="col-span-1">
                 <img src="/img/noun-clock-8026515-4C25E1.png" 
                 className="h-[75px] w-[75px]"/>
@@ -140,7 +161,7 @@ export function ReminderInput({
             <div className="col-span-3">
                 <p className="italic">You can view upcoming reminders and sent reminders from the previous menu.</p>
             </div>
-        </div>
+        </div>}
         
         </>
     )

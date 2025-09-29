@@ -8,6 +8,15 @@ import { ReminderInput } from "./components/ReminderInput"
 import { ViewReminders } from "./components/ViewReminders"
 import { Modal } from "./components/Modal"
 
+// each reminder returned by the api will have this structure :)
+export type Reminder = {
+  reminderId: string;
+  title: string;
+  description: string;
+  reminder_time: string;
+  createdAt: string;
+  sent: boolean;
+}
 
 function App() {
 
@@ -40,16 +49,6 @@ function App() {
 
   const [editing, setEditing] = useState(false)
   const [editReminderId, setEditReminderId] = useState('')
-
-  // each reminder returned by the api will have this structure :)
-  interface Reminder {
-    reminderId: string;
-    title: string;
-    description: string;
-    reminder_time: string;
-    createdAt: string;
-    sent: boolean;
-  }
   
   useEffect(() => {
     console.log('User object:', user)
@@ -71,7 +70,7 @@ function App() {
             setShowModal={setShowModal}
             setModalMessage={setModalMessage}
             />
-            {phoneVerified && <OptionsPanel 
+            {(phoneVerified && !editing) && <OptionsPanel 
             reminderInputOpen={reminderInputOpen}
             viewRemindersOpen={viewRemindersOpen}
             setReminderInputOpen={setReminderInputOpen}
@@ -97,9 +96,7 @@ function App() {
               setModalMessage={setModalMessage}
               setShowModal={setShowModal}
               editing={editing}
-              setEditing={setEditing}
               editReminderId={editReminderId}
-              setEditReminderId={setEditReminderId}
               initialData={{
                 title: reminders.find(r => r.reminderId === editReminderId)?.title || '',
                 description: reminders.find(r => r.reminderId === editReminderId)?.description || '',
@@ -108,6 +105,7 @@ function App() {
               onEditComplete={() => {
                 setEditing(false)
                 setEditReminderId('')
+                setViewRemindersOpen(true)
               }}
               />}
           </>
