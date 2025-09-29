@@ -6,6 +6,15 @@ type ReminderInputProps = {
     setReminderInputOpen: React.Dispatch<React.SetStateAction<boolean>>
     setModalMessage: React.Dispatch<React.SetStateAction<string>>
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+    editing?: boolean
+    setEditing?: React.Dispatch<React.SetStateAction<boolean>>
+    editReminderId?: string
+    setEditReminderId?: React.Dispatch<React.SetStateAction<string>>
+    initialData?: {
+        title: string,
+        description: string,
+        reminder_time: string
+    }
 }
 
 export function ReminderInput({ 

@@ -33,9 +33,24 @@ function App() {
   const [verifying, setVerifying] = useState(false)
   const [phoneVerified, setPhoneVerified] = useState(false)
 
+  const [reminders, setReminders] = useState<Reminder[]>([])
+
   const [showModal, setShowModal] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
+  const [editing, setEditing] = useState(false)
+  const [editReminderId, setEditReminderId] = useState('')
+
+  // each reminder returned by the api will have this structure :)
+interface Reminder {
+  reminderId: string;
+  title: string;
+  description: string;
+  reminder_time: string;
+  createdAt: string;
+  sent: boolean;
+}
+  
   useEffect(() => {
     console.log('User object:', user)
   }, [user])
@@ -70,7 +85,31 @@ function App() {
               setShowModal={setShowModal}/>}
             {viewRemindersOpen && 
               <ViewReminders 
-              setViewRemindersOpen={setViewRemindersOpen}/>}
+              setViewRemindersOpen={setViewRemindersOpen}
+              reminders={reminders}
+              setReminders={setReminders}
+              setEditing={setEditing}
+              setEditReminderId={setEditReminderId}
+              />}
+            {editing && 
+              <ReminderInput
+              setReminderInputOpen={setReminderInputOpen}
+              setModalMessage={setModalMessage}
+              setShowModal={setShowModal}
+              editing={editing}
+              setEditing={setEditing}
+              editReminderId={editReminderId}
+              setEditReminderId={setEditReminderId}
+              initialData={{
+                title: reminders.find(r => r.reminderId === editReminderId)?.title || '',
+                description: reminders.find(r => r.reminderId === editReminderId)?.description || '',
+                reminder_time: reminders.find(r => r.reminderId === editReminderId)?.reminder_time || '',
+              }}
+              onEditComplete={() => {
+                setEditing(false)
+                setEditReminderId('')
+              }}
+              />}
           </>
          ) : (
           <>

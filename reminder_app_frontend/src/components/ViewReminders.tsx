@@ -3,6 +3,10 @@ import { getReminders, deleteReminder, editReminder } from "../api/reminderApi"
 
 type ViewRemindersProps = {
     setViewRemindersOpen: React.Dispatch<React.SetStateAction<boolean>>
+    reminders: Reminder[]
+    setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>
+    editing: boolean
+    setEditing: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // each reminder returned by the api will have this structure :)
@@ -16,9 +20,13 @@ interface Reminder {
 }
 
 // this component will display our reminders
-export function ViewReminders ({ setViewRemindersOpen }: ViewRemindersProps) {
+export function ViewReminders ({ 
+    setViewRemindersOpen,
+    reminders,
+    setReminders
+}: ViewRemindersProps) {
 
-    const [reminders, setReminders] = useState<Reminder[]>([])
+    
     // we initialize this as true because useEffect will fetchreminders on component mount
     const [loading, setLoading] = useState(true)
     // we will use this state to switch between showing sent and unsent reminders
