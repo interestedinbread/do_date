@@ -42,14 +42,14 @@ function App() {
   const [editReminderId, setEditReminderId] = useState('')
 
   // each reminder returned by the api will have this structure :)
-interface Reminder {
-  reminderId: string;
-  title: string;
-  description: string;
-  reminder_time: string;
-  createdAt: string;
-  sent: boolean;
-}
+  interface Reminder {
+    reminderId: string;
+    title: string;
+    description: string;
+    reminder_time: string;
+    createdAt: string;
+    sent: boolean;
+  }
   
   useEffect(() => {
     console.log('User object:', user)
@@ -103,7 +103,7 @@ interface Reminder {
               initialData={{
                 title: reminders.find(r => r.reminderId === editReminderId)?.title || '',
                 description: reminders.find(r => r.reminderId === editReminderId)?.description || '',
-                reminder_time: reminders.find(r => r.reminderId === editReminderId)?.reminder_time || '',
+                reminderTime: reminders.find(r => r.reminderId === editReminderId)?.reminder_time || '',
               }}
               onEditComplete={() => {
                 setEditing(false)

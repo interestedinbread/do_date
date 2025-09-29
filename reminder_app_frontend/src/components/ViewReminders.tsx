@@ -7,23 +7,17 @@ type ViewRemindersProps = {
     setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>
     editing: boolean
     setEditing: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-// each reminder returned by the api will have this structure :)
-interface Reminder {
-    reminderId: string;
-    title: string;
-    description: string;
-    reminder_time: string;
-    createdAt: string;
-    sent: boolean;
+    setEditReminderId: React.Dispatch<React.SetStateAction<string>>
 }
 
 // this component will display our reminders
 export function ViewReminders ({ 
     setViewRemindersOpen,
     reminders,
-    setReminders
+    setReminders,
+    editing,
+    setEditing,
+    setEditReminderId
 }: ViewRemindersProps) {
 
     
@@ -118,18 +112,27 @@ export function ViewReminders ({
                                 key={reminder.reminderId}>
                                     {removingItem !== reminder.reminderId ? (   
                                         <>
+                                            <div className="flex justify-between">
                                             <h4 className="inter-bold text-indigo-600">{reminder.title}</h4>
+                                            <button className="inter-bold bg-white px-2 rounded-md text-green-500 w-max shadow-md"
+                                                onClick={() => {
+                                                    setRemovingItem(reminder.reminderId)
+                                                }}
+                                                >X</button>
+                                            </div>
                                             <p className="italic my-2">{reminder.description}</p>
                                             <div className="flex justify-between">
                                                 <p className="inter-bold">{
                                                     // this converts the reminder time into a string with Canadian date formatting 
                                                     new Date(reminder.reminder_time).toLocaleString()
                                                 }</p>
-                                                <button className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
+                                                <button className="inter-bold bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                                                 onClick={() => {
-                                                    setRemovingItem(reminder.reminderId)
-                                                }}
-                                                >Remove</button>
+                                                    setEditReminderId(reminder.reminderId)
+                                                    setEditing(true)
+                                                }}>
+                                                    Edit
+                                                </button>
                                             </div>
                                         </> 
                                             ) : (

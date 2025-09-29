@@ -13,14 +13,20 @@ type ReminderInputProps = {
     initialData?: {
         title: string,
         description: string,
-        reminder_time: string
+        reminderTime: string
     }
+    onEditComplete?: () => void
 }
 
 export function ReminderInput({ 
     setReminderInputOpen,
     setModalMessage,
-    setShowModal
+    setShowModal,
+    editing,
+    setEditing,
+    setEditReminderId,
+    initialData,
+    onEditComplete
  }: ReminderInputProps) {
 
     // these values will make up the new reminder
@@ -68,8 +74,8 @@ export function ReminderInput({
         <>
         <div className="w-9/10 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto mb-8 grid grid-cols-4 gap-4">
             <div className="col-span-3">
-                <p className="inter-bold text-indigo-600 text-xl">Create your new reminder</p>
-                <p className="italic my-2">Your reminder will be sent to you by text at your chosen time.</p>
+                <p className="inter-bold text-indigo-600 text-xl">{editing ? "Edit your reminder" : "Create your new reminder"}</p>
+                <p className="italic my-2">{editing ? 'When you are finished, just hit "Done"!' : "Your reminder will be sent to you by text at your chosen time."}</p>
             </div>
             <div className="col-span-1">
                 <img src="/img/noun-schedule-256135-4C25E1.png"
@@ -115,7 +121,7 @@ export function ReminderInput({
                     className="bg-white px-2 rounded-md text-green-500 w-max shadow-md"
                     type="submit"
                     >
-                        Save Reminder
+                        {editing ? "Done" : "Save Reminder"}
                     </button>
                     <button
                     onClick={() => {
