@@ -154,16 +154,19 @@ export function VerifyPhone({
                     </form>
                 ) : (
                     <form onSubmit={handleConfirmPhoneNumber}>
-                    <h4 className="italic text-lg">Enter the verification code sent to your phone</h4>
-                    <input className="shadow-md bg-white text-gray-600 rounded-md pl-2 my-4 w-max"
-                    placeholder="Enter 6-digit code"
-                    value={verificationCode}
-                    onChange={(e) => 
-                        setVerificationCode(e.target.value)
-                    }/>
-                    <button type="submit"
-                    disabled={isLoading}
-                    className="bg-white text-green-600 shadow-md rounded-md px-2 my-4 ml-4">{isLoading ? 'Verifying...' : 'Confirm phone number'}</button>
+                        <h4 className="italic text-lg">Enter the verification code sent to your phone</h4>
+                        <div className="flex flex-col">
+                            <input className="shadow-md bg-white text-gray-600 rounded-md pl-2 my-4 w-max"
+                            placeholder="Enter 6-digit code"
+                            value={verificationCode}
+                            onChange={(e) => 
+                                setVerificationCode(e.target.value)
+                            }/>
+                            <button type="submit"
+                            disabled={isLoading}
+                            className="bg-white text-green-600 shadow-md rounded-md px-2 my-4 ml-4">{isLoading ? 'Verifying...' : 'Verify phone number'}
+                            </button>
+                        </div>
                     </form>
                 )
                 }
