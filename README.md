@@ -14,7 +14,7 @@ A full-stack web application that allows users to create, manage, and receive SM
 ## Screenshots
 
 ### Landing Page
-![Landing Page](img/do_date_screenshots/do_date_screenshot_1.jpeg)
+![Landing Page](reminder_app_frontend/public/img/do_date_screenshots/do_date_screenshot_1.jpeg)
 
 ### Create Reminder
 ![Create Reminder](img/do_date_screenshots/do_date_screenshot_2.jpeg)
