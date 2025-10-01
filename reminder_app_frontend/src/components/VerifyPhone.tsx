@@ -164,7 +164,7 @@ export function VerifyPhone({
                             }/>
                             <button type="submit"
                             disabled={isLoading}
-                            className="bg-white text-green-600 shadow-md rounded-md px-2 my-4 ml-4">{isLoading ? 'Verifying...' : 'Verify phone number'}
+                            className="bg-white text-green-600 shadow-md rounded-md px-2 w-max my-4 ml-4">{isLoading ? 'Verifying...' : 'Verify phone number'}
                             </button>
                         </div>
                     </form>
