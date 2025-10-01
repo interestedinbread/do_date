@@ -11,6 +11,20 @@ A full-stack web application that allows users to create, manage, and receive SM
 - **Timezone Support**: Automatic timezone detection for accurate reminder delivery
 - **Responsive UI**: Modern, user-friendly interface built with React and Tailwind CSS
 
+## Screenshots
+
+### Landing Page
+![Landing Page](img/do_date_screenshots/do_date_screenshot_1.jpeg)
+
+### Create Reminder
+![Create Reminder](img/do_date_screenshots/do_date_screenshot_2.jpeg)
+
+### View Reminders
+![View Reminders](img/do_date_screenshots/do_date_screenshot_4.jpeg)
+
+### Edit Reminder
+![Edit Reminder](img/do_date_screenshots/do_date_screenshot_5.jpeg)
+
 ## Tech Stack
 
 ### Frontend
