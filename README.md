@@ -45,6 +45,42 @@ A full-stack web application that allows users to create, manage, and receive SM
 - **AWS EventBridge** - Scheduled event triggering
 - **AWS Lambda** - Serverless function for sending reminders
 
+## Project Structure
+
+```
+Reminder_App/
+├── backend/
+│   ├── controllers/       # Business logic
+│   │   ├── authController.js
+│   │   └── reminderController.js
+│   ├── middleware/        # Authentication middleware
+│   │   └── authMiddleware.js
+│   ├── routes/           # API routes
+│   │   ├── auth.js
+│   │   └── reminders.js
+│   ├── lambda/           # AWS Lambda functions
+│   │   └── sendReminders/
+│   │       └── index.js
+│   └── server.js         # Express server entry point
+│
+└── reminder_app_frontend/
+    ├── src/
+    │   ├── components/   # React components
+    │   │   ├── AuthPanel.tsx
+    │   │   ├── Header.tsx
+    │   │   ├── OptionsPanel.tsx
+    │   │   ├── ReminderInput.tsx
+    │   │   ├── VerifyPhone.tsx
+    │   │   ├── ViewReminders.tsx
+    │   │   ├── Modal.tsx
+    │   │   └── contexts/  # React context for auth
+    │   ├── api/          # API service layer
+    │   │   ├── reminderApi.ts
+    │   │   └── phoneApi.ts
+    │   └── App.tsx       # Main application component
+    └── amplify/          # AWS Amplify configuration
+```
+
 ## Getting Started
 
 ### Prerequisites
