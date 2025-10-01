@@ -17,13 +17,13 @@ A full-stack web application that allows users to create, manage, and receive SM
 ![Landing Page](reminder_app_frontend/public/img/do_date_screenshots/do_date_screenshot_1.jpeg)
 
 ### Create Reminder
-![Create Reminder](img/do_date_screenshots/do_date_screenshot_2.jpeg)
+![Create Reminder](reminder_app_frontend/public/img/do_date_screenshots/do_date_screenshot_2.jpeg)
 
 ### View Reminders
-![View Reminders](img/do_date_screenshots/do_date_screenshot_4.jpeg)
+![View Reminders](reminder_app_frontend/public/img/do_date_screenshots/do_date_screenshot_4.jpeg)
 
 ### Edit Reminder
-![Edit Reminder](img/do_date_screenshots/do_date_screenshot_5.jpeg)
+![Edit Reminder](reminder_app_frontend/public/img/do_date_screenshots/do_date_screenshot_5.jpeg)
 
 ## Tech Stack
 
