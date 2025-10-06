@@ -20,7 +20,8 @@ export function Modal({
     }
 
     return createPortal(
-        <div className="fixed inset-0 z-50 bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-10"
+        <div className="fixed inset-0 z-50 bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-10
+                        lg:w-96 lg:h-[800px] lg:bg-black lg:rounded-[2.5rem] lg:overflow-y-auto lg:border-4 border-gray-300 lg:pb-8 lg:pt-12 lg:mx-auto lg:mt-20"
             onClick={() => {
                 handleCloseModal()
             }}>

@@ -90,8 +90,8 @@ export function ReminderInput({
         <>
         <div className="w-9/10 h-max p-2 bg-indigo-100 shadow-md rounded-lg mx-auto mb-8 grid grid-cols-4 gap-4">
             <div className="col-span-3">
-                <p className="inter-bold text-indigo-600 text-xl">{editing ? "Edit your reminder" : "Create your new reminder"}</p>
-                <p className="italic my-2">{editing ? 'When you are finished, just hit "Done"!' : "Your reminder will be sent to you by text at your chosen time."}</p>
+                <p className="inter-bold text-indigo-600 text-xl lg:text-base">{editing ? "Edit your reminder" : "Create your new reminder"}</p>
+                <p className="italic my-2 text-sm">{editing ? 'When you are finished, just hit "Done"!' : "Your reminder will be sent to you by text at your chosen time."}</p>
             </div>
             <div className="col-span-1">
                 <img src="/img/noun-schedule-256135-4C25E1.png"
@@ -159,7 +159,7 @@ export function ReminderInput({
                 className="h-[75px] w-[75px]"/>
             </div>
             <div className="col-span-3">
-                <p className="italic">You can view upcoming reminders and sent reminders from the previous menu.</p>
+                <p className="italic lg:text-sm lg:pt-2">You can view upcoming reminders and sent reminders from the previous menu.</p>
             </div>
         </div>}
         

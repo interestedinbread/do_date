@@ -55,7 +55,8 @@ function App() {
   }, [user])
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-16">
+    <div className="h-screen w-screen bg-gradient-to-br from-gray-50 via-gray-100 to-blue-50 pt-16
+                    lg:w-96 lg:h-[800px] lg:bg-black lg:rounded-[2.5rem] lg:overflow-y-auto lg:border-4 border-gray-300 lg:pb-8 lg:pt-12 lg:mx-auto lg:mt-20 lg:relative lg:overscroll-none">
         {user ? (
           <>
             <VerifyPhone 

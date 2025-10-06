@@ -43,7 +43,7 @@ export function Header({ setAuthPanelOpen }: HeaderProps ) {
                     <img src="/img/noun-success-8043471-007435.png" className="h-[50px] w-[50px]"></img>
                 </div>
             </div>
-            <div className="bg-indigo-100 shadow-md rounded-lg p-4 w-2/3 flex justify-between mt-8 ml-5">
+            <div className="bg-indigo-100 shadow-md rounded-lg p-4 w-max flex gap-4 justify-between mt-8 ml-5">
                 <div>
                     <p className="italic">Ready to get started?</p>
                 </div>
