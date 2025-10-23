@@ -51,10 +51,6 @@ exports.verifyPhoneNumber = async (req, res) => {
       AccessToken: accessToken
     }))
 
-    const userId = user.UserAttributes.find(
-      attr => attr.Name === "sub"
-    )?.Value
-
     const result = await docClient.send(new GetCommand({
         TableName: 'verification-codes',
         Key: { phoneNumber }
