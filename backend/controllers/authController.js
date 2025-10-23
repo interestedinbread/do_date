@@ -85,16 +85,6 @@ exports.verifyPhoneNumber = async (req, res) => {
     }))
     
     console.log('Phone number verification status stored in DynamoDB')
-
-    await docClient.send(new PutCommand({
-      TableName: 'verified-phone-numbers',
-      Item: {
-        userId,
-        phoneNumber,
-        verifiedAt: new Date().toISOString()
-      }
-    }))
-    
     res.json({ success: true, message: 'Phone number verified successfully' });
   } catch (error) {
     console.error('Error verifying phone:', error);
